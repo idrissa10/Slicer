@@ -69,15 +69,15 @@ class SampleData(ScriptedLoadableModule):
 
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
-        self.parent.title = "Sample Data"
-        self.parent.categories = ["Informatics"]
+        self.parent.title = _("Sample Data")
+        self.parent.categories = [_("Informatics")]
         self.parent.dependencies = []
         self.parent.contributors = ["Steve Pieper (Isomics), Benjamin Long (Kitware), Jean-Christophe Fillion-Robin (Kitware)"]
-        self.parent.helpText = """
+        self.parent.helpText = _("""
 This module provides data sets that can be used for testing 3D Slicer.
-"""
+""")
         self.parent.helpText += self.getDefaultModuleDocumentationLink()
-        self.parent.acknowledgementText = """
+        self.parent.acknowledgementText = _("""
 <p>This work was was funded in part by Cancer Care Ontario
 and the Ontario Consortium for Adaptive Interventions in Radiation Oncology (OCAIRO)</p>
 
@@ -89,7 +89,7 @@ with a permissive copyright-license (<a href="https://creativecommons.org/licens
 <p>CTA abdomen (Panoramix) dataset comes from <a href="https://www.osirix-viewer.com/resources/dicom-image-library/">Osirix DICOM image library</a>
 and is exclusively available for research and teaching. You are not authorized to redistribute or sell it, or
 use it for commercial purposes.</p>
-"""
+""")
 
         if slicer.mrmlScene.GetTagByClassName("vtkMRMLScriptedModuleNode") != 'ScriptedModule':
             slicer.mrmlScene.RegisterNodeClass(vtkMRMLScriptedModuleNode())
@@ -106,8 +106,8 @@ use it for commercial purposes.</p>
             slicer.modules.sampleDataSources = {}
 
     def addMenu(self):
-        a = qt.QAction('Download Sample Data', slicer.util.mainWindow())
-        a.setToolTip('Go to the SampleData module to download data from the network')
+        a = qt.QAction(_("Download Sample Data"), slicer.util.mainWindow())
+        a.setToolTip(_("Go to the SampleData module to download data from the network"))
         a.connect('triggered()', self.select)
 
         fileMenu = slicer.util.lookupTopLevelWidget('FileMenu')
@@ -1143,10 +1143,10 @@ class SampleDataTest(ScriptedLoadableModuleTest):
             'fileNames': 'volume.nrrd',
             'loadFileType': 'VolumeFile',
         }
-        self.assertFalse(SampleDataLogic.isSampleDataSourceRegistered("Testing", SampleDataSource(**sourceArguments)))
-        SampleDataLogic.registerCustomSampleDataSource(**sourceArguments, category="Testing")
-        self.assertTrue(SampleDataLogic.isSampleDataSourceRegistered("Testing", SampleDataSource(**sourceArguments)))
-        self.assertFalse(SampleDataLogic.isSampleDataSourceRegistered("Other", SampleDataSource(**sourceArguments)))
+        self.assertFalse(SampleDataLogic.isSampleDataSourceRegistered(_("Testing"), SampleDataSource(**sourceArguments)))
+        SampleDataLogic.registerCustomSampleDataSource(**sourceArguments, category=_("Testing"))
+        self.assertTrue(SampleDataLogic.isSampleDataSourceRegistered(_("Testing"), SampleDataSource(**sourceArguments)))
+        self.assertFalse(SampleDataLogic.isSampleDataSourceRegistered(_("Other"), SampleDataSource(**sourceArguments)))
 
     class CustomDownloader:
         def __call__(self, source):

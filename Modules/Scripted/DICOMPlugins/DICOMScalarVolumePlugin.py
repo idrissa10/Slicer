@@ -76,7 +76,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
             readersComboBox.addItem(approach)
         readersComboBox.toolTip = ("Preferred back end.  Archetype was used by default in Slicer before June of 2017."
                                    "Change this setting if data that previously loaded stops working (and report an issue).")
-        formLayout.addRow("DICOM reader approach:", readersComboBox)
+        formLayout.addRow(_("DICOM reader approach:"), readersComboBox)
         panel.registerProperty(
             "DICOM/ScalarVolume/ReaderApproach", readersComboBox,
             "currentIndex", str(qt.SIGNAL("currentIndexChanged(int)")))
@@ -86,13 +86,13 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
                                          " non-rectilinear grid (such as tilted gantry CT acquisitions) and non-uniform slice spacing."
                                          " If no regularization is applied then image may appear distorted if it was acquired with irregular geometry.")
 
-        importFormatsComboBox.addItem("default (apply regularization transform)", "default")
-        importFormatsComboBox.addItem("none", "none")
-        importFormatsComboBox.addItem("apply regularization transform", "transform")
+        importFormatsComboBox.addItem(_("default (apply regularization transform)"), _("default"))
+        importFormatsComboBox.addItem(_("none"), _("none"))
+        importFormatsComboBox.addItem(_("apply regularization transform"), _("transform"))
         # In the future additional option, such as "resample" (harden the applied transform) may be added.
 
         importFormatsComboBox.currentIndex = 0
-        formLayout.addRow("Acquisition geometry regularization:", importFormatsComboBox)
+        formLayout.addRow(_("Acquisition geometry regularization:"), importFormatsComboBox)
         panel.registerProperty(
             "DICOM/ScalarVolume/AcquisitionGeometryRegularization", importFormatsComboBox,
             "currentUserDataAsString", str(qt.SIGNAL("currentIndexChanged(int)")),
@@ -103,7 +103,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
         allowLoadingByTimeCheckBox.toolTip = ("Offer loading of individual slices or group of slices"
                                               " that were acquired at a specific time (content or trigger time)."
                                               " If this option is enabled then a large number of loadable items may be displayed in the Advanced section of DICOM browser.")
-        formLayout.addRow("Allow loading subseries by time:", allowLoadingByTimeCheckBox)
+        formLayout.addRow(_("Allow loading subseries by time:"), allowLoadingByTimeCheckBox)
         allowLoadingByTimeMapper = ctk.ctkBooleanMapper(allowLoadingByTimeCheckBox, "checked", str(qt.SIGNAL("toggled(bool)")))
         panel.registerProperty(
             "DICOM/ScalarVolume/AllowLoadingByTime", allowLoadingByTimeMapper,
@@ -181,7 +181,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
         allFilesLoadable = DICOMLoadable()
         allFilesLoadable.files = files
         allFilesLoadable.name = self.cleanNodeName(seriesName)
-        allFilesLoadable.tooltip = "%d files, first file: %s" % (len(allFilesLoadable.files), allFilesLoadable.files[0])
+        allFilesLoadable.tooltip = _("%d files, first file: %s") % (len(allFilesLoadable.files), allFilesLoadable.files[0])
         allFilesLoadable.selected = True
         # add it to the list of loadables later, if pixel data is available in at least one file
 
@@ -255,7 +255,8 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
                     else:
                         loadable.name = seriesName + f" - {tag} {value}"
                     loadable.name = self.cleanNodeName(loadable.name)
-                    loadable.tooltip = "%d files, grouped by %s = %s. First file: %s. %s = %s" % (len(loadable.files), tag, value, loadable.files[0], tag, value)
+                    loadable.tooltip = _("%d files, grouped by %s = %s. First file:"
+                                         "%s. %s = %s") % (len(loadable.files), tag, value, loadable.files[0], tag, value)
                     loadable.selected = False
                     loadables.append(loadable)
                     if len(subseriesValues[tag]) == 2:
@@ -550,7 +551,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
         # Define basic properties of the exportable
         exportable = slicer.qSlicerDICOMExportable()
         exportable.name = self.loadType
-        exportable.tooltip = "Creates a series of DICOM files from scalar volumes"
+        exportable.tooltip = _("Creates a series of DICOM files from scalar volumes")
         exportable.subjectHierarchyItemID = subjectHierarchyItemID
         exportable.pluginClass = self.__module__
         exportable.confidence = 0.5  # There could be more specialized volume types
@@ -709,7 +710,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
 
             # create the grid transform node
             gridTransform = slicer.vtkMRMLGridTransformNode()
-            gridTransform.SetName(slicer.mrmlScene.GenerateUniqueName(volumeNode.GetName() + ' acquisition transform'))
+            gridTransform.SetName(slicer.mrmlScene.GenerateUniqueName(volumeNode.GetName() + _(" acquisition transform")))
             slicer.mrmlScene.AddNode(gridTransform)
 
             # place grid transform in the same subject hierarchy folder as the volume node
@@ -857,19 +858,19 @@ class DICOMScalarVolumePlugin:
     """
 
     def __init__(self, parent):
-        parent.title = "DICOM Scalar Volume Plugin"
-        parent.categories = ["Developer Tools.DICOM Plugins"]
+        parent.title = _("DICOM Scalar Volume Plugin")
+        parent.categories = [_("Developer Tools.DICOM Plugins")]
         parent.contributors = ["Steve Pieper (Isomics Inc.), Csaba Pinter (Queen's)"]
-        parent.helpText = """
+        parent.helpText = _("""
     Plugin to the DICOM Module to parse and load scalar volumes
     from DICOM files.
     No module interface here, only in the DICOM module
-    """
-        parent.acknowledgementText = """
+    """)
+        parent.acknowledgementText = _("""
     This DICOM Plugin was developed by
     Steve Pieper, Isomics, Inc.
     and was partially funded by NIH grant 3P41RR013218.
-    """
+    """)
 
         # don't show this module - it only appears in the DICOM module
         parent.hidden = True

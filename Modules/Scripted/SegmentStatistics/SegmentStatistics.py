@@ -17,11 +17,11 @@ class SegmentStatistics(ScriptedLoadableModule):
 
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
-        self.parent.title = "Segment Statistics"
-        self.parent.categories = ["Quantification"]
-        self.parent.dependencies = ["SubjectHierarchy"]
+        self.parent.title = _("Segment Statistics")
+        self.parent.categories = [_("Quantification")]
+        self.parent.dependencies = [_("SubjectHierarchy")]
         self.parent.contributors = ["Andras Lasso (PerkLab), Christian Bauer (University of Iowa), Steve Pieper (Isomics)"]
-        self.parent.helpText = """
+        self.parent.helpText = _("""
 Use this module to calculate counts and volumes for segments plus statistics on the grayscale background volume.
 Computed fields:
 Segment labelmap statistics (LM): voxel count, volume mm3, volume cm3.
@@ -31,11 +31,11 @@ min, max, mean, stdev (intensity statistics).
 Requires segment labelmap representation and selection of a scalar volume
 Closed surface statistics (CS): surface mm2, volume mm3, volume cm3 (computed from closed surface).
 Requires segment closed surface representation.
-"""
+""")
         self.parent.helpText += parent.defaultDocumentationLink
-        self.parent.acknowledgementText = """
+        self.parent.acknowledgementText = _("""
 Supported by NA-MIC, NAC, BIRN, NCIGT, and the Slicer Community. See https://www.slicer.org for details.
-"""
+""")
 
     def setup(self):
         # Register subject hierarchy plugin
@@ -74,12 +74,12 @@ class SegmentStatisticsWidget(ScriptedLoadableModuleWidget):
         self.parameterNodeSelector.showChildNodeTypes = False
         self.parameterNodeSelector.baseName = "SegmentStatistics"
         self.parameterNodeSelector.setMRMLScene(slicer.mrmlScene)
-        self.parameterNodeSelector.setToolTip("Pick parameter set")
+        self.parameterNodeSelector.setToolTip(_("Pick parameter set"))
         self.layout.addWidget(self.parameterNodeSelector)
 
         # Inputs
         inputsCollapsibleButton = ctk.ctkCollapsibleButton()
-        inputsCollapsibleButton.text = "Inputs"
+        inputsCollapsibleButton.text = _("Inputs")
         self.layout.addWidget(inputsCollapsibleButton)
         inputsFormLayout = qt.QFormLayout(inputsCollapsibleButton)
 
@@ -90,8 +90,8 @@ class SegmentStatisticsWidget(ScriptedLoadableModuleWidget):
         self.segmentationSelector.removeEnabled = True
         self.segmentationSelector.renameEnabled = True
         self.segmentationSelector.setMRMLScene(slicer.mrmlScene)
-        self.segmentationSelector.setToolTip("Pick the segmentation to compute statistics for")
-        inputsFormLayout.addRow("Segmentation:", self.segmentationSelector)
+        self.segmentationSelector.setToolTip(_("Pick the segmentation to compute statistics for"))
+        inputsFormLayout.addRow(_("Segmentation:"), self.segmentationSelector)
 
         # Scalar volume selector
         self.scalarSelector = slicer.qMRMLNodeComboBox()
@@ -102,17 +102,17 @@ class SegmentStatisticsWidget(ScriptedLoadableModuleWidget):
         self.scalarSelector.noneEnabled = True
         self.scalarSelector.showChildNodeTypes = False
         self.scalarSelector.setMRMLScene(slicer.mrmlScene)
-        self.scalarSelector.setToolTip("Select the scalar volume for intensity statistics calculations")
-        inputsFormLayout.addRow("Scalar volume:", self.scalarSelector)
+        self.scalarSelector.setToolTip(_("Select the scalar volume for intensity statistics calculations"))
+        inputsFormLayout.addRow(_("Scalar volume:"), self.scalarSelector)
 
         # Output table selector
         outputCollapsibleButton = ctk.ctkCollapsibleButton()
-        outputCollapsibleButton.text = "Output"
+        outputCollapsibleButton.text = _("Output")
         self.layout.addWidget(outputCollapsibleButton)
         outputFormLayout = qt.QFormLayout(outputCollapsibleButton)
 
         self.outputTableSelector = slicer.qMRMLNodeComboBox()
-        self.outputTableSelector.noneDisplay = "Create new table"
+        self.outputTableSelector.noneDisplay = _("Create new table")
         self.outputTableSelector.setMRMLScene(slicer.mrmlScene)
         self.outputTableSelector.nodeTypes = ["vtkMRMLTableNode"]
         self.outputTableSelector.addEnabled = True
@@ -120,14 +120,14 @@ class SegmentStatisticsWidget(ScriptedLoadableModuleWidget):
         self.outputTableSelector.renameEnabled = True
         self.outputTableSelector.removeEnabled = True
         self.outputTableSelector.noneEnabled = True
-        self.outputTableSelector.setToolTip("Select the table where statistics will be saved into")
+        self.outputTableSelector.setToolTip(_("Select the table where statistics will be saved into"))
         self.outputTableSelector.setCurrentNode(None)
 
-        outputFormLayout.addRow("Output table:", self.outputTableSelector)
+        outputFormLayout.addRow(_("Output table:"), self.outputTableSelector)
 
         # Parameter set
         parametersCollapsibleButton = ctk.ctkCollapsibleButton()
-        parametersCollapsibleButton.text = "Advanced"
+        parametersCollapsibleButton.text = _("Advanced")
         parametersCollapsibleButton.collapsed = True
         self.layout.addWidget(parametersCollapsibleButton)
         self.parametersLayout = qt.QFormLayout(parametersCollapsibleButton)
@@ -142,8 +142,8 @@ class SegmentStatisticsWidget(ScriptedLoadableModuleWidget):
         self.addPluginOptionWidgets()
 
         # Apply Button
-        self.applyButton = qt.QPushButton("Apply")
-        self.applyButton.toolTip = "Calculate Statistics."
+        self.applyButton = qt.QPushButton(_("Apply"))
+        self.applyButton.toolTip = _("Calculate Statistics.")
         self.applyButton.enabled = False
         self.parent.layout().addWidget(self.applyButton)
 
@@ -187,12 +187,12 @@ class SegmentStatisticsWidget(ScriptedLoadableModuleWidget):
         """Calculate the label statistics
         """
 
-        with slicer.util.tryWithErrorDisplay("Failed to compute results.", waitCursor=True):
+        with slicer.util.tryWithErrorDisplay(_("Failed to compute results."), waitCursor=True):
             if not self.outputTableSelector.currentNode():
                 newTable = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLTableNode")
                 self.outputTableSelector.setCurrentNode(newTable)
             # Lock GUI
-            self.applyButton.text = "Working..."
+            self.applyButton.text = _("Working...")
             self.applyButton.setEnabled(False)
             slicer.app.processEvents()
             # set up parameters for computation
@@ -209,7 +209,7 @@ class SegmentStatisticsWidget(ScriptedLoadableModuleWidget):
 
         # Unlock GUI
         self.applyButton.setEnabled(True)
-        self.applyButton.text = "Apply"
+        self.applyButton.text = _("Apply")
 
     def onEditParameters(self, pluginName=None):
         """Open dialog box to edit plugin's parameters"""
@@ -218,7 +218,7 @@ class SegmentStatisticsWidget(ScriptedLoadableModuleWidget):
 
     def addPluginOptionWidgets(self):
         self.pluginEnabledCheckboxes = {}
-        self.parametersLayout.addRow(qt.QLabel("Enabled segment statistics plugins:"))
+        self.parametersLayout.addRow(qt.QLabel(_("Enabled segment statistics plugins:")))
         for plugin in self.logic.plugins:
             checkbox = qt.QCheckBox(plugin.name + " Statistics")
             checkbox.checked = True
@@ -291,7 +291,7 @@ class SegmentStatisticsParameterEditorDialog(qt.QDialog):
 
     def __init__(self, parent=None, parameterNode=None, pluginName=None):
         super(qt.QDialog, self).__init__(parent)
-        self.title = "Edit Segment Statistics Parameters"
+        self.title = _("Edit Segment Statistics Parameters")
         self.parameterNode = parameterNode
         self.pluginName = pluginName
         self.logic = SegmentStatisticsLogic()  # for access to plugins and editor widgets
@@ -308,10 +308,10 @@ class SegmentStatisticsParameterEditorDialog(qt.QDialog):
     def setup(self):
         self.setLayout(qt.QVBoxLayout())
 
-        self.descriptionLabel = qt.QLabel("Edit segment statistics plugin parameters:", 0)
+        self.descriptionLabel = qt.QLabel(_("Edit segment statistics plugin parameters:"), 0)
 
-        self.doneButton = qt.QPushButton("Done")
-        self.doneButton.toolTip = "Finish editing."
+        self.doneButton = qt.QPushButton(_("Done"))
+        self.doneButton.toolTip = _("Finish editing.")
         doneWidget = qt.QWidget(self)
         doneWidget.setLayout(qt.QHBoxLayout())
         doneWidget.layout().addStretch(1)
@@ -332,9 +332,9 @@ class SegmentStatisticsParameterEditorDialog(qt.QDialog):
         self.doneButton.connect('clicked()', lambda: self.done(1))
 
     def _addPluginOptionWidgets(self):
-        description = "Edit segment statistics plugin parameters:"
+        description = _("Edit segment statistics plugin parameters:")
         if self.pluginName:
-            description = "Edit " + self.pluginName + " plugin parameters:"
+            description = _("Edit ") + self.pluginName + _(" plugin parameters:")
         self.descriptionLabel.text = description
         if self.pluginName:
             for plugin in self.logic.plugins:
@@ -614,7 +614,7 @@ class SegmentStatisticsLogic(ScriptedLoadableModuleLogic):
             col.SetName(columnName)
             if plugin:
                 table.SetColumnProperty(columnName, "Plugin", plugin.name)
-                longColumnName += '<br>Computed by ' + plugin.name + ' Statistics plugin'
+                longColumnName += _("<br>Computed by ") + plugin.name + _(" Statistics plugin")
             table.SetColumnLongName(columnName, longColumnName)
             measurementInfo = statistics["MeasurementInfo"][key] if key in statistics["MeasurementInfo"] else {}
             if measurementInfo:
@@ -711,16 +711,16 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
         This tests some aspects of the label statistics
         """
 
-        self.delayDisplay("Starting test_SegmentStatisticsBasic")
+        self.delayDisplay(_("Starting test_SegmentStatisticsBasic"))
 
         import SampleData
         from SegmentStatistics import SegmentStatisticsLogic
 
-        self.delayDisplay("Load source volume")
+        self.delayDisplay(_("Load source volume"))
 
         sourceVolumeNode = SampleData.downloadSample('MRBrainTumor1')
 
-        self.delayDisplay("Create segmentation containing a few spheres")
+        self.delayDisplay(_("Create segmentation containing a few spheres"))
 
         segmentationNode = slicer.mrmlScene.AddNewNodeByClass('vtkMRMLSegmentationNode')
         segmentationNode.CreateDefaultDisplayNodes()
@@ -737,48 +737,48 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
             uniqueSegmentID = segmentationNode.GetSegmentation().GenerateUniqueSegmentID("Test")
             segmentationNode.AddSegmentFromClosedSurfaceRepresentation(sphereSource.GetOutput(), uniqueSegmentID)
 
-        self.delayDisplay("Compute statistics")
+        self.delayDisplay(_("Compute statistics"))
 
         segStatLogic = SegmentStatisticsLogic()
         segStatLogic.getParameterNode().SetParameter("Segmentation", segmentationNode.GetID())
         segStatLogic.getParameterNode().SetParameter("ScalarVolume", sourceVolumeNode.GetID())
         segStatLogic.computeStatistics()
 
-        self.delayDisplay("Check a few numerical results")
+        self.delayDisplay(_("Check a few numerical results"))
         self.assertEqual(segStatLogic.getStatistics()["Test_2", "LabelmapSegmentStatisticsPlugin.voxel_count"], 9807)
         self.assertEqual(segStatLogic.getStatistics()["Test_4", "ScalarVolumeSegmentStatisticsPlugin.voxel_count"], 380)
 
-        self.delayDisplay("Export results to table")
+        self.delayDisplay(_("Export results to table"))
         resultsTableNode = slicer.vtkMRMLTableNode()
         slicer.mrmlScene.AddNode(resultsTableNode)
         segStatLogic.exportToTable(resultsTableNode)
         segStatLogic.showTable(resultsTableNode)
 
-        self.delayDisplay("Export results to string")
+        self.delayDisplay(_("Export results to string"))
         logging.info(segStatLogic.exportToString())
 
         outputFilename = slicer.app.temporaryPath + '/SegmentStatisticsTestOutput.csv'
-        self.delayDisplay("Export results to CSV file: " + outputFilename)
+        self.delayDisplay(_("Export results to CSV file: ") + outputFilename)
         segStatLogic.exportToCSVFile(outputFilename)
 
-        self.delayDisplay('test_SegmentStatisticsBasic passed!')
+        self.delayDisplay(_("test_SegmentStatisticsBasic passed!"))
 
     def test_SegmentStatisticsPlugins(self):
         """
         This tests some aspects of the segment statistics plugins
         """
 
-        self.delayDisplay("Starting test_SegmentStatisticsPlugins")
+        self.delayDisplay(_("Starting test_SegmentStatisticsPlugins"))
 
         import vtkSegmentationCorePython as vtkSegmentationCore
         import SampleData
         from SegmentStatistics import SegmentStatisticsLogic
 
-        self.delayDisplay("Load source volume")
+        self.delayDisplay(_("Load source volume"))
 
         sourceVolumeNode = SampleData.downloadSample('MRBrainTumor1')
 
-        self.delayDisplay("Create segmentation containing a few spheres")
+        self.delayDisplay(_("Create segmentation containing a few spheres"))
 
         segmentationNode = slicer.mrmlScene.AddNewNodeByClass('vtkMRMLSegmentationNode')
         segmentationNode.CreateDefaultDisplayNodes()
@@ -797,7 +797,7 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
             segmentationNode.AddSegmentFromClosedSurfaceRepresentation(sphereSource.GetOutput(), uniqueSegmentID)
 
         # test calculating only measurements for selected segments
-        self.delayDisplay("Test calculating only measurements for individual segments")
+        self.delayDisplay(_("Test calculating only measurements for individual segments"))
         segStatLogic = SegmentStatisticsLogic()
         segStatLogic.getParameterNode().SetParameter("Segmentation", segmentationNode.GetID())
         segStatLogic.getParameterNode().SetParameter("ScalarVolume", sourceVolumeNode.GetID())
@@ -825,7 +825,7 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
         self.assertEqual(segStatLogic.getStatistics()["Test_1", "LabelmapSegmentStatisticsPlugin.voxel_count"], 23281)
 
         # test updating measurements for segments one by one
-        self.delayDisplay("Update some segments in the segmentation")
+        self.delayDisplay(_("Update some segments in the segmentation"))
         segmentGeometriesNew = [[5, -6, 30, 28], [21, 0, 65, 32]]
         # We add/remove representations, so we temporarily block segment modifications
         # to make sure display managers don't try to access data while it is in an
@@ -853,7 +853,7 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
         self.assertTrue(segStatLogic.getStatistics()["Test_1", "LabelmapSegmentStatisticsPlugin.voxel_count"] != 23281)
 
         # test enabling/disabling of individual measurements
-        self.delayDisplay("Test disabling of individual measurements")
+        self.delayDisplay(_("Test disabling of individual measurements"))
         segStatLogic = SegmentStatisticsLogic()
         segStatLogic.getParameterNode().SetParameter("Segmentation", segmentationNode.GetID())
         segStatLogic.getParameterNode().SetParameter("ScalarVolume", sourceVolumeNode.GetID())
@@ -867,7 +867,7 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
         self.assertTrue('Volume [mm3] (1)' in columnHeaders)
         self.assertFalse('Volume [cm3] (3)' in columnHeaders)
 
-        self.delayDisplay("Test re-enabling of individual measurements")
+        self.delayDisplay(_("Test re-enabling of individual measurements"))
         segStatLogic.getParameterNode().SetParameter("LabelmapSegmentStatisticsPlugin.voxel_count.enabled", str(True))
         segStatLogic.getParameterNode().SetParameter("LabelmapSegmentStatisticsPlugin.volume_cm3.enabled", str(True))
         segStatLogic.computeStatistics()
@@ -879,7 +879,7 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
         self.assertTrue('Volume [cm3] (1)' in columnHeaders)
 
         # test enabling/disabling of individual plugins
-        self.delayDisplay("Test disabling of plugin")
+        self.delayDisplay(_("Test disabling of plugin"))
         segStatLogic.getParameterNode().SetParameter("LabelmapSegmentStatisticsPlugin.enabled", str(False))
         segStatLogic.computeStatistics()
         segStatLogic.exportToTable(resultsTableNode)
@@ -889,7 +889,7 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
         self.assertFalse('Volume [mm3] (3)' in columnHeaders)
         self.assertTrue('Volume [mm3] (2)' in columnHeaders)
 
-        self.delayDisplay("Test re-enabling of plugin")
+        self.delayDisplay(_("Test re-enabling of plugin"))
         segStatLogic.getParameterNode().SetParameter("LabelmapSegmentStatisticsPlugin.enabled", str(True))
         segStatLogic.computeStatistics()
         segStatLogic.exportToTable(resultsTableNode)
@@ -899,7 +899,7 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
         self.assertTrue('Volume [mm3] (3)' in columnHeaders)
 
         # test unregistering/registering of plugins
-        self.delayDisplay("Test of removing all registered plugins")
+        self.delayDisplay(_("Test of removing all registered plugins"))
         SegmentStatisticsLogic.registeredPlugins = []  # remove all registered plugins
         segStatLogic = SegmentStatisticsLogic()
         segStatLogic.getParameterNode().SetParameter("Segmentation", segmentationNode.GetID())
@@ -911,7 +911,7 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
         self.assertEqual(len(columnHeaders), 1)  # only header element should be "Segment"
         self.assertEqual(columnHeaders[0], "Segment")  # only header element should be "Segment"
 
-        self.delayDisplay("Test registering plugins")
+        self.delayDisplay(_("Test registering plugins"))
         SegmentStatisticsLogic.registerPlugin(LabelmapSegmentStatisticsPlugin())
         SegmentStatisticsLogic.registerPlugin(ScalarVolumeSegmentStatisticsPlugin())
         SegmentStatisticsLogic.registerPlugin(ClosedSurfaceSegmentStatisticsPlugin())
@@ -926,7 +926,7 @@ class SegmentStatisticsTest(ScriptedLoadableModuleTest):
         self.assertTrue('Number of voxels [voxels] (2)' in columnHeaders)
         self.assertTrue('Surface area [mm2]' in columnHeaders)
 
-        self.delayDisplay('test_SegmentStatisticsPlugins passed!')
+        self.delayDisplay(_("test_SegmentStatisticsPlugins passed!"))
 
 
 class Slicelet:
@@ -945,10 +945,10 @@ class Slicelet:
         self.buttons = qt.QFrame()
         self.buttons.setLayout(qt.QHBoxLayout())
         self.parent.layout().addWidget(self.buttons)
-        self.addDataButton = qt.QPushButton("Add Data")
+        self.addDataButton = qt.QPushButton(_("Add Data"))
         self.buttons.layout().addWidget(self.addDataButton)
         self.addDataButton.connect("clicked()", slicer.app.ioManager().openAddDataDialog)
-        self.loadSceneButton = qt.QPushButton("Load Scene")
+        self.loadSceneButton = qt.QPushButton(_("Load Scene"))
         self.buttons.layout().addWidget(self.loadSceneButton)
         self.loadSceneButton.connect("clicked()", slicer.app.ioManager().openLoadSceneDialog)
 

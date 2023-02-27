@@ -752,7 +752,7 @@ def getLoadablesFromFileLists(fileLists, pluginClassNames=None, messages=None, p
             traceback.print_exc()
             logging.error("DICOM Plugin failed: %s" % str(e))
             if messages:
-                messages.append("Plugin failed: %s." % pluginClass)
+                messages.append(_("Plugin failed: %s.") % pluginClass)
 
     return loadablesByPlugin, loadEnabled
 
@@ -853,7 +853,7 @@ def importFromDICOMWeb(dicomWebEndpoint, studyInstanceUID, seriesInstanceUID=Non
 
     progressDialog = slicer.util.createProgressDialog(parent=slicer.util.mainWindow(), value=0, maximum=100)
     try:
-        progressDialog.labelText = f'Retrieving series list...'
+        progressDialog.labelText = f_("Retrieving series list...")
         slicer.app.processEvents()
 
         if accessToken is None:
@@ -861,7 +861,7 @@ def importFromDICOMWeb(dicomWebEndpoint, studyInstanceUID, seriesInstanceUID=Non
         else:
             client = DICOMwebClient(
                 url=dicomWebEndpoint,
-                headers={"Authorization": f"Bearer {accessToken}"},
+                headers={_("Authorization"): f"Bearer {accessToken}"},
             )
 
         seriesList = client.search_for_series(study_instance_uid=studyInstanceUID)

@@ -16,7 +16,7 @@ class DMRIInstall(ScriptedLoadableModule):
     """
 
     helpText = textwrap.dedent(
-        """
+        _("""
   The SlicerDMRI extension provides diffusion-related tools including:
 
   <ul>
@@ -37,7 +37,7 @@ class DMRIInstall(ScriptedLoadableModule):
   <br>
   <br>
   &nbsp;&nbsp; <a href="https://discourse.slicer.org">https://discourse.slicer.org</a><br><br>
-  """)
+  """))
 
     errorText = textwrap.dedent(
         """
@@ -64,8 +64,8 @@ class DMRIInstall(ScriptedLoadableModule):
 
         ScriptedLoadableModule.__init__(self, parent)
 
-        self.parent.categories = ["Diffusion"]
-        self.parent.title = "Install Slicer Diffusion Tools (SlicerDMRI)"
+        self.parent.categories = [_("Diffusion")]
+        self.parent.title = _("Install Slicer Diffusion Tools (SlicerDMRI)")
         self.parent.dependencies = []
         self.parent.contributors = ["Isaiah Norton (BWH), Lauren O'Donnell (BWH)"]
         self.parent.helpText = DMRIInstall.helpText
@@ -94,8 +94,8 @@ class DMRIInstallWidget(ScriptedLoadableModuleWidget):
         #
         # Apply Button
         #
-        self.applyButton = qt.QPushButton("Install SlicerDMRI")
-        self.applyButton.toolTip = 'Installs the "SlicerDMRI" extension from the Diffusion category.'
+        self.applyButton = qt.QPushButton(_("Install SlicerDMRI"))
+        self.applyButton.toolTip = _("Installs the 'SlicerDMRI' extension from the Diffusion category.")
         self.applyButton.icon = qt.QIcon(":/Icons/ExtensionDefaultIcon.png")
         self.applyButton.enabled = True
         self.applyButton.connect('clicked()', self.onApply)
@@ -112,7 +112,7 @@ class DMRIInstallWidget(ScriptedLoadableModuleWidget):
         emm = slicer.app.extensionsManagerModel()
 
         if emm.isExtensionInstalled("SlicerDMRI"):
-            self.textBox.setHtml("<h4>SlicerDMRI is already installed.<h4>")
+            self.textBox.setHtml(_("<h4>SlicerDMRI is already installed.<h4>"))
             self.applyButton.enabled = False
             return
 
@@ -122,4 +122,4 @@ class DMRIInstallWidget(ScriptedLoadableModuleWidget):
         if not emm.downloadAndInstallExtensionByName(extensionName, True, True):  # install dependencies, wait for installation to finish
             return self.onError()
 
-        slicer.app.confirmRestart("Restart to complete SlicerDMRI installation?")
+        slicer.app.confirmRestart(_("Restart to complete SlicerDMRI installation?"))
