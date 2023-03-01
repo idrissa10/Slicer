@@ -3059,7 +3059,7 @@ def clickAndDrag(widget, button='Left', start=(10, 10), end=(10, 40), steps=20, 
     elif button == 'Middle':
         down = interactor.MiddleButtonPressEvent
         up = interactor.MiddleButtonReleaseEvent
-    elif button == 'None') or not button:
+    elif button == 'None' or not button:
         down = lambda: None
         up = lambda: None
     else:

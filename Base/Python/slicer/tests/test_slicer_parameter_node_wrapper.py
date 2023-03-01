@@ -725,7 +725,7 @@ class TypedParameterNodeTest(unittest.TestCase):
         self.assertIsNot(param, param2)
         self.assertIsNot(param.a, param2.a)
 
-        param2.a[aa"] = 103
+        param2.a["aa"] = 103
         self.assertEqual(param.a["aa"], 103)
 
     def test_dict_of_list(self):

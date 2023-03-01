@@ -441,7 +441,7 @@ class TypedParameterNodeTest(unittest.TestCase):
             annotatedBox: BoundingBox = BoundingBox(Point(-99, 8), Point(11, 10))
             annotatedSub: AnnotatedSub
 
-        self.assertEqual(ParameterPack.dataType(box"), BoundingBox)
+        self.assertEqual(ParameterPack.dataType("box"), BoundingBox)
         self.assertEqual(ParameterPack.dataType("box.topLeft"), Point)
         self.assertEqual(ParameterPack.dataType("box.topLeft.x"), float)
         self.assertEqual(ParameterPack.dataType("value"), int)

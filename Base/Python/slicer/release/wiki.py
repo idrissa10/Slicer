@@ -444,12 +444,12 @@ def main():
     )
     parser_query.add_argument(
         "--version-list", action="store_true",
-        help=_("display the versions associated with page ")
+        help="display the versions associated with page "
         "'Template::Documentation/versionlist'"
     )
     parser_query.add_argument(
         "--acknowledgments-main-version", action="store_true",
-        help=_("display the version associated with page ")
+        help= "display the version associated with page "
         "'Template:Documentation/acknowledgments-versionlist'"
     )
     parser_query.add_argument(
