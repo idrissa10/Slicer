@@ -37,9 +37,9 @@ class DICOMLoadable:
             # the file list of the data to be loaded
             self.files = []
             # name exposed to the user for the node
-            self.name = "Unknown"
+            self.name = _("Unknown")
             # extra information the user sees on mouse over of the thing
-            self.tooltip = "No further information available"
+            self.tooltip = _("No further information available")
             # things the user should know before loading this data
             self.warning = ""
             # is the object checked for loading by default
@@ -74,7 +74,7 @@ class DICOMPlugin:
 
     def __init__(self):
         # displayed for the user as the plugin handling the load
-        self.loadType = "Generic DICOM"
+        self.loadType = _("Generic DICOM")
         # a dictionary that maps a list of files to a list of loadables
         # (so that subsequent requests for the same info can be
         #  serviced quickly)
@@ -184,7 +184,7 @@ class DICOMPlugin:
         seriesNumber = slicer.dicomDatabase.fileValue(instanceFilePaths[0], self.tags['seriesNumber'])
         name = seriesDescription
         if seriesDescription == "":
-            name = "Unnamed Series"
+            name = _("Unnamed Series")
         if seriesNumber != "":
             name = seriesNumber + ": " + name
         return name
@@ -305,7 +305,7 @@ class DICOMPlugin:
                 # Add attributes for DICOM tags
                 patientName = slicer.dicomDatabase.fileValue(firstFile, tags['patientName'])
                 if patientName == '':
-                    patientName = 'No name'
+                    patientName = _("No name")
 
                 shn.SetItemAttribute(patientItemID, slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientNameAttributeName(),
                                      patientName)
@@ -332,7 +332,7 @@ class DICOMPlugin:
                 # Add attributes for DICOM tags
                 studyDescription = slicer.dicomDatabase.fileValue(firstFile, tags['studyDescription'])
                 if studyDescription == '':
-                    studyDescription = 'No study description'
+                    studyDescription = _("No study description")
 
                 shn.SetItemAttribute(studyItemID, slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyDescriptionAttributeName(),
                                      studyDescription)

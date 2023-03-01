@@ -11,16 +11,16 @@ from slicer.ScriptedLoadableModule import *
 class PerformanceTests(ScriptedLoadableModule):
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
-        parent.title = "Performance Tests"
-        parent.categories = ["Testing.TestCases"]
+        parent.title = _("Performance Tests")
+        parent.categories = [_("Testing.TestCases")]
         parent.contributors = ["Steve Pieper (Isomics)"]
-        parent.helpText = """
+        parent.helpText = _("""
     Module to run interactive performance tests on the core of slicer.
-    """
-        parent.acknowledgementText = """
+    """)
+        parent.acknowledgementText = _("""
     This file was based on work originally developed by Jean-Christophe Fillion-Robin, Kitware Inc.
 and others.  This work was partially funded by NIH grant 3P41RR013218-12S1.
-    """
+    """)
         self.parent = parent
 
 
@@ -32,10 +32,10 @@ class PerformanceTestsWidget(ScriptedLoadableModuleWidget):
     def setup(self):
         ScriptedLoadableModuleWidget.setup(self)
         tests = (
-            ('Get Sample Data', self.downloadMRHead),
-            ('Reslicing', self.reslicing),
-            ('Crosshair Jump', self.crosshairJump),
-            ('Memory Check', self.memoryCheck),
+            (_("Get Sample Data"), self.downloadMRHead),
+            (_("Reslicing"), self.reslicing),
+            (_("Crosshair Jump"), self.crosshairJump),
+            (_("Memory Check"), self.memoryCheck),
         )
 
         for test in tests:
@@ -55,7 +55,7 @@ class PerformanceTestsWidget(ScriptedLoadableModuleWidget):
 
     def downloadMRHead(self):
         import SampleData
-        self.log.insertHtml('<b>Requesting downloading MRHead')
+        self.log.insertHtml(_("<b>Requesting downloading MRHead"))
         self.log.repaint()
         mrHeadVolume = SampleData.downloadSample("MRHead")
         if mrHeadVolume:
@@ -110,13 +110,13 @@ class PerformanceTestsWidget(ScriptedLoadableModuleWidget):
                 sampleIndex += 1
         sliceNode.SetSliceOffset(startOffset)
 
-        resultTableName = slicer.mrmlScene.GetUniqueNameByString("Reslice performance")
+        resultTableName = slicer.mrmlScene.GetUniqueNameByString(_("Reslice performance"))
         resultTableNode = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLTableNode", resultTableName)
-        slicer.util.updateTableFromArray(resultTableNode, renderingTimesSec, "Rendering time [s]")
+        slicer.util.updateTableFromArray(resultTableNode, renderingTimesSec, _("Rendering time [s]"))
 
         renderingTimeMean = np.mean(renderingTimesSec)
         renderingTimeStd = np.std(renderingTimesSec)
-        result = ("%d x %d, fps = %.1f (%.1f +/- %.2f ms per frame) - see details in table '%s'"
+        result = (_("%d x %d, fps = %.1f (%.1f +/- %.2f ms per frame) - see details in table '%s'")
                   % (dims[0], dims[1], 1.0 / renderingTimeMean, 1000. * renderingTimeMean, 1000. * renderingTimeStd, resultTableNode.GetName()))
         print(result)
         self.log.insertHtml('<i>%s</i>' % result)
@@ -149,9 +149,9 @@ class PerformanceTestsWidget(ScriptedLoadableModuleWidget):
             delta = ((endTime1 - startTime) + (endTime2 - endTime1)) / 2.
             elapsedTime += delta
         fps = int(iters / elapsedTime)
-        result = "number of slice views = %d, fps = %g (%g ms per frame)" % (len(sliceViewNames), fps, 1000. / fps)
+        result = _("number of slice views = %d, fps = %g (%g ms per frame)") % (len(sliceViewNames), fps, 1000. / fps)
         print(result)
-        self.log.insertHtml('<i>%s</i>' % result)
+        self.log.insertHtml(_("<i>%s</i>") % result)
         self.log.insertPlainText('\n')
         self.log.ensureCursorVisible()
         self.log.repaint()
@@ -159,7 +159,7 @@ class PerformanceTestsWidget(ScriptedLoadableModuleWidget):
     def memoryCallback(self):
         if self.sysInfoWindow.visible:
             self.sysInfo.RunMemoryCheck()
-            self.sysInfoWindow.append('p: %d of %d,  v: %d of %d' %
+            self.sysInfoWindow.append(_("p: %d of %d,  v: %d of %d") %
                                       (self.sysInfo.GetAvailablePhysicalMemory(),
                                        self.sysInfo.GetTotalPhysicalMemory(),
                                        self.sysInfo.GetAvailableVirtualMemory(),
@@ -184,7 +184,7 @@ class sliceLogicTest:
         self.sliceLogic = slicer.vtkMRMLSliceLayerLogic()
         self.sliceLogic.SetMRMLScene(slicer.mrmlScene)
         self.sliceNode = slicer.vtkMRMLSliceNode()
-        self.sliceNode.SetLayoutName("Black")
+        self.sliceNode.SetLayoutName(_("Black"))
         slicer.mrmlScene.AddNode(self.sliceNode)
         self.sliceLogic.SetSliceNode(self.sliceNode)
 

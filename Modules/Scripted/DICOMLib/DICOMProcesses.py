@@ -445,7 +445,7 @@ class DICOMSender(DICOMProcess):
 
             if needInstall:
                 # pythonweb-client 0.50 was broken (https://github.com/MGHComputationalPathology/dicomweb-client/issues/41)
-                progressDialog = slicer.util.createProgressDialog(labelText='Upgrading dicomweb-client. This may take a minute...', maximum=0)
+                progressDialog = slicer.util.createProgressDialog(labelText=_("Upgrading dicomweb-client. This may take a minute..."), maximum=0)
                 slicer.app.processEvents()
                 slicer.util.pip_install(f'dicomweb-client>={minimumDicomwebClientVersion}')
                 import dicomweb_client

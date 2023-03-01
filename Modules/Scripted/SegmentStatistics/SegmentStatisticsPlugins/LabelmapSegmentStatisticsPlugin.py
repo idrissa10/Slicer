@@ -124,14 +124,14 @@ class LabelmapSegmentStatisticsPlugin(SegmentStatisticsPluginBase):
                 for option in temp:
                     if option not in self.obbKeys:
                         statFilterOptions.append(option)
-                statFilterOptions.append("oriented_bounding_box")
+                statFilterOptions.append(_("oriented_bounding_box"))
 
                 temp = requestedOptions
                 requestedOptions = []
                 for option in temp:
                     if option not in self.obbKeys:
                         requestedOptions.append(option)
-                requestedOptions.append("oriented_bounding_box")
+                requestedOptions.append(_("oriented_bounding_box"))
 
             calculatePrincipalAxis = (
                 "principal_axis_x" in requestedKeys or

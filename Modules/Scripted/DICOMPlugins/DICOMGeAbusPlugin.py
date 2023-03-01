@@ -266,7 +266,7 @@ class DICOMGeAbusPluginClass(DICOMPlugin):
 
         # create the grid transform node
         gridTransform = slicer.vtkMRMLGridTransformNode()
-        gridTransform.SetName(slicer.mrmlScene.GenerateUniqueName(volumeNode.GetName() + ' acquisition transform'))
+        gridTransform.SetName(slicer.mrmlScene.GenerateUniqueName(volumeNode.GetName() + _(" acquisition transform")))
         slicer.mrmlScene.AddNode(gridTransform)
         gridTransform.SetAndObserveTransformToParent(transform)
 
@@ -312,16 +312,16 @@ class DICOMGeAbusPlugin:
     """
 
     def __init__(self, parent):
-        parent.title = "DICOM GE ABUS Import Plugin"
-        parent.categories = ["Developer Tools.DICOM Plugins"]
+        parent.title = _("DICOM GE ABUS Import Plugin")
+        parent.categories = [_("Developer Tools.DICOM Plugins")]
         parent.contributors = ["Andras Lasso (PerkLab)"]
-        parent.helpText = """
+        parent.helpText = _("""
     Plugin to the DICOM Module to parse and load GE Invenia ABUS images.
     No module interface here, only in the DICOM module.
-    """
-        parent.acknowledgementText = """
+    """)
+        parent.acknowledgementText = _("""
     The file was originally developed by Andras Lasso (PerkLab).
-    """
+    """)
 
         # don't show this module - it only appears in the DICOM module
         parent.hidden = True

@@ -25,21 +25,21 @@ class _ui_EditExtensionMetadataDialog:
         formLayout = qt.QFormLayout()
 
         self.nameEdit = qt.QLineEdit()
-        formLayout.addRow("Name:", self.nameEdit)
+        formLayout.addRow(_("Name:"), self.nameEdit)
 
         self.categoryEdit = qt.QLineEdit()
-        formLayout.addRow("Category:", self.categoryEdit)
+        formLayout.addRow(_("Category:"), self.categoryEdit)
 
         self.descriptionEdit = qt.QTextEdit()
         self.descriptionEdit.acceptRichText = False
-        formLayout.addRow("Description:", self.descriptionEdit)
+        formLayout.addRow(_("Description:"), self.descriptionEdit)
 
         self.contributorsList = EditableTreeWidget()
         self.contributorsList.rootIsDecorated = False
         self.contributorsList.selectionBehavior = qt.QAbstractItemView.SelectRows
         self.contributorsList.selectionMode = qt.QAbstractItemView.ExtendedSelection
-        self.contributorsList.setHeaderLabels(["Name", "Organization"])
-        formLayout.addRow("Contributors:", self.contributorsList)
+        self.contributorsList.setHeaderLabels([_("Name"), _("Organization")])
+        formLayout.addRow(_("Contributors:"), self.contributorsList)
 
         vLayout.addLayout(formLayout)
         vLayout.addStretch(1)
@@ -56,9 +56,9 @@ class _ui_EditExtensionMetadataDialog:
 #
 # =============================================================================
 class EditExtensionMetadataDialog:
-    project = _map_property(lambda self: self.ui.nameEdit, "text")
-    category = _map_property(lambda self: self.ui.categoryEdit, "text")
-    description = _map_property(lambda self: self.ui.descriptionEdit, "plainText")
+    project = _map_property(lambda self: self.ui.nameEdit, _("text"))
+    category = _map_property(lambda self: self.ui.categoryEdit, _("text"))
+    description = _map_property(lambda self: self.ui.descriptionEdit, _("plainText"))
 
     # ---------------------------------------------------------------------------
     def __init__(self, parent):

@@ -29,7 +29,7 @@ class DICOMImageSequencePluginClass(DICOMPlugin):
 
     def __init__(self):
         super().__init__()
-        self.loadType = "Image sequence"
+        self.loadType = _("Image sequence")
 
         self.tags['sopClassUID'] = "0008,0016"
         self.tags['seriesNumber'] = "0020,0011"
@@ -393,16 +393,16 @@ class DICOMImageSequencePlugin:
     """
 
     def __init__(self, parent):
-        parent.title = "DICOM Image Sequence Import Plugin"
-        parent.categories = ["Developer Tools.DICOM Plugins"]
+        parent.title = _("DICOM Image Sequence Import Plugin")
+        parent.categories = [_("Developer Tools.DICOM Plugins")]
         parent.contributors = ["Andras Lasso (PerkLab)"]
-        parent.helpText = """
+        parent.helpText = _("""
     Plugin to the DICOM Module to parse and load 2D image sequences.
     No module interface here, only in the DICOM module.
-    """
-        parent.acknowledgementText = """
+    """)
+        parent.acknowledgementText = _("""
     The file was originally developed by Andras Lasso (PerkLab).
-    """
+    """)
 
         # don't show this module - it only appears in the DICOM module
         parent.hidden = True

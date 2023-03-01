@@ -52,13 +52,13 @@ class VectorToScalarVolume(ScriptedLoadableModule):
 
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
-        self.parent.title = "Vector to Scalar Volume"
-        self.parent.categories = ["Converters"]
+        self.parent.title = _("Vector to Scalar Volume")
+        self.parent.categories = [_("Converters")]
         self.parent.dependencies = []
         self.parent.contributors = ["Steve Pieper (Isomics)",
                                     "Pablo Hernandez-Cerdan (Kitware)",
                                     "Jean-Christophe Fillion-Robin (Kitware)", ]
-        self.parent.helpText = """
+        self.parent.helpText = _("""
     <p>Make a scalar (1 component) volume from a vector volume.</p>
 
     <p>It provides multiple conversion modes:</p>
@@ -68,12 +68,12 @@ class VectorToScalarVolume(ScriptedLoadableModule):
     <li>convert RGB images to scalar using luminance as implemented in vtkImageLuminance (scalar = 0.30*R + 0.59*G + 0.11*B).</li>
     <li>computes the mean of all the components.</li>
     </ul>
-    """
-        self.parent.acknowledgementText = """
+    """)
+        self.parent.acknowledgementText = _("""
 Developed by Steve Pieper, Isomics, Inc.,
 partially funded by NIH grant 3P41RR013218-12S1 (NAC) and is part of the National Alliance
 for Medical Image Computing (NA-MIC), funded by the National Institutes of Health through the
-NIH Roadmap for Medical Research, Grant U54 EB005149."""
+NIH Roadmap for Medical Research, Grant U54 EB005149.""")
 
 
 #
@@ -82,16 +82,16 @@ NIH Roadmap for Medical Research, Grant U54 EB005149."""
 
 class ConversionMethods(enum.Enum):
     LUMINANCE = (
-        "Luminance",
-        "(RGB,RGBA) Luminance from first three components: 0.30*R + 0.59*G + 0.11*B + 0.0*A)",
+        _("Luminance"),
+        _("(RGB,RGBA) Luminance from first three components: 0.30*R + 0.59*G + 0.11*B + 0.0*A)"),
     )
     AVERAGE = (
-        "Average",
-        "Average all the components.",
+        _("Average"),
+        _("Average all the components."),
     )
     SINGLE_COMPONENT = (
-        "Single Component Extraction",
-        "Extract single component",
+        _("Single Component Extraction"),
+        _("Extract single component"),
     )
 
 
@@ -527,11 +527,11 @@ class VectorToScalarVolumeTest(ScriptedLoadableModuleTest):
         your test should break so they know that the feature is needed.
         """
 
-        self.delayDisplay("Starting the test")
+        self.delayDisplay(_("Starting the test"))
 
         # Create input data
 
-        self.delayDisplay("Create input data")
+        self.delayDisplay(_("Create input data"))
 
         import numpy as np
         inputVolume = slicer.mrmlScene.AddNewNodeByClass('vtkMRMLVectorVolumeNode')
@@ -547,7 +547,7 @@ class VectorToScalarVolumeTest(ScriptedLoadableModuleTest):
 
         logic = VectorToScalarVolumeLogic()
 
-        self.delayDisplay("Test SINGLE_COMPONENT")
+        self.delayDisplay(_("Test SINGLE_COMPONENT"))
 
         logic.runWithVariables(inputVolume, outputVolume, ConversionMethods.SINGLE_COMPONENT, 0)
         outputScalarRange = outputVolume.GetImageData().GetScalarRange()
@@ -559,18 +559,18 @@ class VectorToScalarVolumeTest(ScriptedLoadableModuleTest):
         self.assertEqual(outputScalarRange[0], 50)
         self.assertEqual(outputScalarRange[1], 50)
 
-        self.delayDisplay("Test LUMINANCE")
+        self.delayDisplay(_("Test LUMINANCE"))
 
         logic.runWithVariables(inputVolume, outputVolume, ConversionMethods.LUMINANCE)
         outputScalarRange = outputVolume.GetImageData().GetScalarRange()
         self.assertEqual(outputScalarRange[0], 49)
         self.assertEqual(outputScalarRange[1], 49)
 
-        self.delayDisplay("Test AVERAGE")
+        self.delayDisplay(_("Test AVERAGE"))
 
         logic.runWithVariables(inputVolume, outputVolume, ConversionMethods.AVERAGE)
         outputScalarRange = outputVolume.GetImageData().GetScalarRange()
         self.assertEqual(outputScalarRange[0], 60)
         self.assertEqual(outputScalarRange[1], 60)
 
-        self.delayDisplay('Test passed')
+        self.delayDisplay(_("Test passed"))

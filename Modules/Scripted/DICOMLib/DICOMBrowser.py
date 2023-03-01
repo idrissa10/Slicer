@@ -81,7 +81,7 @@ class SlicerDICOMBrowser(VTKObservationMixin, qt.QWidget):
         extra widgets
         """
 
-        self.setWindowTitle('DICOM Browser')
+        self.setWindowTitle(_("DICOM Browser"))
         self.setLayout(qt.QVBoxLayout())
 
         self.dicomBrowser.databaseDirectorySelectorVisible = False
@@ -130,27 +130,27 @@ class SlicerDICOMBrowser(VTKObservationMixin, qt.QWidget):
         self.actionButtonLayout = qt.QHBoxLayout()
         self.actionButtonsFrame.setLayout(self.actionButtonLayout)
 
-        self.uncheckAllButton = qt.QPushButton('Uncheck All')
+        self.uncheckAllButton = qt.QPushButton(_("Uncheck All"))
         self.actionButtonLayout.addWidget(self.uncheckAllButton)
         self.uncheckAllButton.connect('clicked()', self.uncheckAllLoadables)
 
         self.actionButtonLayout.addStretch(0.05)
 
-        self.examineButton = qt.QPushButton('Examine')
+        self.examineButton = qt.QPushButton(_("Examine"))
         self.examineButton.setSizePolicy(qt.QSizePolicy.Expanding, qt.QSizePolicy.Fixed)
         self.actionButtonLayout.addWidget(self.examineButton)
         self.examineButton.enabled = False
         self.examineButton.connect('clicked()', self.examineForLoading)
 
-        self.loadButton = qt.QPushButton('Load')
+        self.loadButton = qt.QPushButton(_("Load"))
         self.loadButton.setSizePolicy(qt.QSizePolicy.Expanding, qt.QSizePolicy.Fixed)
-        self.loadButton.toolTip = 'Load selected items into the scene'
+        self.loadButton.toolTip = _("Load selected items into the scene")
         self.actionButtonLayout.addWidget(self.loadButton)
         self.loadButton.connect('clicked()', self.loadCheckedLoadables)
 
         self.actionButtonLayout.addStretch(0.05)
 
-        self.advancedViewButton = qt.QCheckBox('Advanced')
+        self.advancedViewButton = qt.QCheckBox(_("Advanced"))
         self.advancedViewButton.objectName = 'AdvancedViewCheckBox'
         self.actionButtonLayout.addWidget(self.advancedViewButton)
         self.advancedViewButton.checked = self.advancedView
@@ -541,7 +541,7 @@ class SlicerDICOMBrowser(VTKObservationMixin, qt.QWidget):
         progressDialog.close()
 
         if messages:
-            slicer.util.warningDisplay('\n'.join(messages), windowTitle='DICOM loading')
+            slicer.util.warningDisplay('\n'.join(messages), windowTitle=_("DICOM loading"))
 
         self.onLoadingFinished()
 
@@ -568,10 +568,10 @@ class SlicerDICOMBrowser(VTKObservationMixin, qt.QWidget):
 
 class DICOMReferencesDialog(qt.QMessageBox):
 
-    WINDOW_TITLE = "Referenced datasets found"
-    WINDOW_TEXT = "The loaded DICOM objects contain references to other datasets you did not select for loading. Please " \
+    WINDOW_TITLE = _("Referenced datasets found")
+    WINDOW_TEXT = _("The loaded DICOM objects contain references to other datasets you did not select for loading. Please " \
                   "select Yes if you would like to load the following referenced datasets, No if you only want to load the " \
-                  "originally selected series, or Cancel to abort loading."
+                  "originally selected series, or Cancel to abort loading.")
 
     def __init__(self, parent, loadables):
         super().__init__(parent)
@@ -583,8 +583,8 @@ class DICOMReferencesDialog(qt.QMessageBox):
         self._setBasicProperties()
         self._addTextLabel()
         self._addLoadableCheckboxes()
-        self.rememberChoiceAndStopAskingCheckbox = qt.QCheckBox('Remember choice and stop asking')
-        self.rememberChoiceAndStopAskingCheckbox.toolTip = 'Can be changed later in Application Settings / DICOM'
+        self.rememberChoiceAndStopAskingCheckbox = qt.QCheckBox(_("Remember choice and stop asking"))
+        self.rememberChoiceAndStopAskingCheckbox.toolTip = _("Can be changed later in Application Settings / DICOM")
         self.yesButton = self.addButton(self.Yes)
         self.yesButton.setSizePolicy(qt.QSizePolicy(qt.QSizePolicy.Expanding, qt.QSizePolicy.Preferred))
         self.noButton = self.addButton(self.No)
@@ -645,7 +645,7 @@ class DICOMLoadableTable(qt.QTableWidget):
 
     def configure(self):
         self.setColumnCount(3)
-        self.setHorizontalHeaderLabels(['DICOM Data', 'Reader', 'Warnings'])
+        self.setHorizontalHeaderLabels([_("DICOM Data"), _("Reader"), _("Warnings")])
         self.setSelectionBehavior(qt.QTableView.SelectRows)
         self.horizontalHeader().setSectionResizeMode(qt.QHeaderView.Stretch)
         self.horizontalHeader().setSectionResizeMode(0, qt.QHeaderView.Interactive)

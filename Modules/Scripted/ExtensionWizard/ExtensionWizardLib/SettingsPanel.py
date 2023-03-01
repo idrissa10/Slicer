@@ -22,10 +22,10 @@ class _ui_SettingsPanel:
         if (builtinPath):
             self.builtinPath.text = builtinPath
         else:
-            self.builtinPath.text = "(Unavailable)"
+            self.builtinPath.text = _("(Unavailable)")
             self.builtinPath.enabled = False
         self.builtinPath.readOnly = True
-        self.addRow("Built-in template path:", self.builtinPath)
+        self.addRow(_("Built-in template path:"), self.builtinPath)
 
         self.genericPaths = DirectoryListWidget()
         self.addRow("Additional template\npaths:", self.genericPaths)

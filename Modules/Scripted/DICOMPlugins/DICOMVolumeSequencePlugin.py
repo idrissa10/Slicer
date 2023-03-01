@@ -20,7 +20,7 @@ class DICOMVolumeSequencePluginClass(DICOMPlugin):
 
     def __init__(self):
         super().__init__()
-        self.loadType = "Volume Sequence"
+        self.loadType = _("Volume Sequence")
 
         self.tags['studyID'] = '0020,0010'
         self.tags['seriesDescription'] = "0008,103e"
@@ -91,7 +91,7 @@ class DICOMVolumeSequencePluginClass(DICOMPlugin):
         # Define basic properties of the exportable
         exportable = slicer.qSlicerDICOMExportable()
         exportable.name = self.loadType
-        exportable.tooltip = "Creates a series of DICOM files from volume sequences"
+        exportable.tooltip = _("Creates a series of DICOM files from volume sequences")
         exportable.subjectHierarchyItemID = subjectHierarchyItemID
         exportable.pluginClass = self.__module__
         exportable.confidence = 0.6  # Simple volume has confidence of 0.5, use a slightly higher value here
@@ -271,16 +271,16 @@ class DICOMVolumeSequencePlugin:
     """
 
     def __init__(self, parent):
-        parent.title = "DICOM Volume Sequence Export Plugin"
-        parent.categories = ["Developer Tools.DICOM Plugins"]
+        parent.title = _("DICOM Volume Sequence Export Plugin")
+        parent.categories = [_("Developer Tools.DICOM Plugins")]
         parent.contributors = ["Andras Lasso (PerkLab)"]
-        parent.helpText = """
+        parent.helpText = _("""
     Plugin to the DICOM Module to export volume sequence to DICOM file.
     No module interface here, only in the DICOM module.
-    """
-        parent.acknowledgementText = """
+    """)
+        parent.acknowledgementText = _("""
     Originally developed by Andras Lasso (PekLab).
-    """
+    """)
 
         # don't show this module - it only appears in the DICOM module
         parent.hidden = True

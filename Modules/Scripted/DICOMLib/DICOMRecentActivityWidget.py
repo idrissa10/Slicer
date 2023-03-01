@@ -45,7 +45,7 @@ class DICOMRecentActivityWidget(qt.QWidget):
 
         self.refreshButton = qt.QPushButton()
         self.layout().addWidget(self.refreshButton)
-        self.refreshButton.text = 'Refresh'
+        self.refreshButton.text = _("Refresh")
         self.refreshButton.connect('clicked()', self.update)
 
         self.tags = {}
@@ -117,9 +117,9 @@ class DICOMRecentActivityWidget(qt.QWidget):
             self.listWidget.addItem(series.text)
             if series.elapsedSinceInsert < secondsPerHour:
                 insertsPastHour += 1
-        self.statusLabel.text = '%d series added to database in the past hour' % insertsPastHour
+        self.statusLabel.text = _("%d series added to database in the past hour") % insertsPastHour
         if len(self.recentSeries) > 0:
-            statusMessage = "Most recent DICOM Database addition: %s" % self.recentSeries[0].insertDateTime.toString()
+            statusMessage = _("Most recent DICOM Database addition: %s") % self.recentSeries[0].insertDateTime.toString()
             slicer.util.showStatusMessage(statusMessage, 10000)
 
     def onActivated(self, modelIndex):
