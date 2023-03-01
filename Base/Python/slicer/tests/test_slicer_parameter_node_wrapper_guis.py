@@ -522,7 +522,7 @@ class ParameterNodeWrapperGuiTest(unittest.TestCase):
         self.assertEqual(param.bravo, "someval\nsomeval2")
         self.assertEqual(lineEditBravo.toPlainText(), "someval\nsomeval2")
 
-        lineEditAlpha.setHtml("hello,<br/>world")
+        lineEditAlpha.setHtml(hello,<br/>world")
         self.assertEqual(param.alpha, "hello,\nworld")
         self.assertEqual(lineEditAlpha.toPlainText(), "hello,\nworld")
         self.assertEqual(param.bravo, "someval\nsomeval2")
@@ -625,7 +625,7 @@ class ParameterNodeWrapperGuiTest(unittest.TestCase):
 
         # Phase 0 - connect parameterNode to GUI
         mapping = {
-            "alpha": directoryButtonAlpha,
+            alpha": directoryButtonAlpha,
             "bravo": directoryButtonBravo,
         }
         param.connectParametersToGui(mapping)

@@ -13,7 +13,7 @@ class SlicerPythonLzmaTests(unittest.TestCase):
 
     def test_compressionDecompressionRoundtrip(self):
         # Generate some input data
-        someText = "something..."
+        someText = _("something...")
         originalData = someText.encode()
 
         # Compress

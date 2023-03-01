@@ -725,7 +725,7 @@ class TypedParameterNodeTest(unittest.TestCase):
         self.assertIsNot(param, param2)
         self.assertIsNot(param.a, param2.a)
 
-        param2.a["aa"] = 103
+        param2.a[aa"] = 103
         self.assertEqual(param.a["aa"], 103)
 
     def test_dict_of_list(self):
@@ -806,7 +806,7 @@ class TypedParameterNodeTest(unittest.TestCase):
         self.assertEqual(param.optBool, None)
 
         param.intOrStr = "hi"
-        self.assertEqual(param.intOrStr, "hi")
+        self.assertEqual(param.intOrStr, _("hi"))
 
         param.intOrStr = 99
         self.assertEqual(param.intOrStr, 99)
@@ -1001,7 +1001,7 @@ class TypedParameterNodeTest(unittest.TestCase):
         obs += ('string1', 'string2')
         self.assertEqual(2, callback.called)
 
-        list(param.s).append('Should not cause an event')
+        list(param.s).append(_('Should not cause an event'))
         self.assertEqual(2, callback.called)
 
         param.s = ['a', 'b', 'c']
@@ -1161,14 +1161,14 @@ class TypedParameterNodeTest(unittest.TestCase):
             param.mf = [7.0] * 100
 
         import timeit
-        print("get int              ", timeit.timeit(lambda: param.i, number=100_000))
-        print("set int              ", timeit.timeit(seti, number=100_000))
-        print("get float            ", timeit.timeit(lambda: param.f, number=100_000))
-        print("set float            ", timeit.timeit(setf, number=100_000))
-        print("get list of 100 int  ", timeit.timeit(lambda: param.mi, number=100_000))
-        print("set list of 100 int  ", timeit.timeit(setmi, number=100_000))
-        print("get list of 100 float", timeit.timeit(lambda: param.mf, number=100_000))
-        print("set list of 100 float", timeit.timeit(setmf, number=100_000))
+        print(_("get int              "), timeit.timeit(lambda: param.i, number=100_000))
+        print(_("set int              "), timeit.timeit(seti, number=100_000))
+        print(_("get float            "), timeit.timeit(lambda: param.f, number=100_000))
+        print(_("set float            "), timeit.timeit(setf, number=100_000))
+        print(_("get list of 100 int  "), timeit.timeit(lambda: param.mi, number=100_000))
+        print(_("set list of 100 int  "), timeit.timeit(setmi, number=100_000))
+        print(_("get list of 100 float"), timeit.timeit(lambda: param.mf, number=100_000))
+        print(_("set list of 100 float"), timeit.timeit(setmf, number=100_000))
 
         # failure so it shows up with ctest --output-on-failure
         self.assertTrue(False)

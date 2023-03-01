@@ -333,10 +333,10 @@ def handle_query(wiki, args):
 
     def display_acknowledgments_main_version():
         print(
-            "Acknowledgments main version: %s" % wiki.acknowledgments_main_version())
+            _("Acknowledgments main version: %s") % wiki.acknowledgments_main_version())
 
     def display_redirect_pages_version():
-        print("Redirect pages:")
+        print(_("Redirect pages:"))
         for redirect_page, version in wiki.redirect_pages_version():
             print(f"  {redirect_page}: {version}")
 
@@ -444,43 +444,43 @@ def main():
     )
     parser_query.add_argument(
         "--version-list", action="store_true",
-        help="display the versions associated with page "
+        help=_("display the versions associated with page ")
         "'Template::Documentation/versionlist'"
     )
     parser_query.add_argument(
         "--acknowledgments-main-version", action="store_true",
-        help="display the version associated with page "
+        help=_("display the version associated with page ")
         "'Template:Documentation/acknowledgments-versionlist'"
     )
     parser_query.add_argument(
         "--redirect-pages-version", action="store_true",
-        help="display the version associated with pages with redirect"
+        help=_("display the version associated with pages with redirect")
     )
 
     # sub-command parser
     parser_copy = subparsers.add_parser(
-        'copy', help='copy Nightly pages into RELEASE_VERSION namespace')
+        'copy', help=_('copy Nightly pages into RELEASE_VERSION namespace'))
     parser_copy.add_argument(
         "release_version", type=str, metavar="RELEASE_VERSION",
-        help="the release version where Nightly pages will be copied into"
+        help=_("the release version where Nightly pages will be copied into")
     )
 
     # sub-command parser
     parser_update = subparsers.add_parser(
-        'update', help='create and/or update wiki pages with RELEASE_VERSION')
+        'update', help=_("create and/or update wiki pages with RELEASE_VERSION"))
 
     parser_update.add_argument(
         "release_version", type=str, metavar="RELEASE_VERSION",
-        help="the release version used to update permanent pages"
+        help=_("the release version used to update permanent pages")
     )
     parser_update.add_argument(
         "--version-info-pages", action="store_true",
-        help="update the version associated with pages %s" % ", ".join(
+        help=_("update the version associated with pages %s") % ", ".join(
             ['%s' % page_name for page_name in Wiki.VERSION_INFO_PAGES.values()])
     )
     parser_update.add_argument(
         "--redirect-pages", action="store_true",
-        help="update the version associated with redirect pages"
+        help=_("update the version associated with redirect pages")
     )
     parser_update.add_argument(
         "--version-list", action="store_true",
@@ -494,7 +494,7 @@ def main():
     )
     parser_update.add_argument(
         "--top-level-documentation-page", action="store_true",
-        help="add RELEASE_VERSION to page 'Documentation'"
+        help=_("add RELEASE_VERSION to page 'Documentation'")
     )
 
     args = parser.parse_args()
@@ -516,4 +516,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("interrupt received, stopping...")
+        print(_("interrupt received, stopping..."))

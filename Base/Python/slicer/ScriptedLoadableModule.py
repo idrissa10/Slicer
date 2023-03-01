@@ -23,14 +23,14 @@ class ScriptedLoadableModule:
         parent.categories = []
         parent.dependencies = []
         parent.contributors = ["Andras Lasso (PerkLab, Queen's University), Steve Pieper (Isomics)"]
-        parent.helpText = """
+        parent.helpText = _("""
 This module was created from a template and the help section has not yet been updated.
-"""
+""")
 
-        parent.acknowledgementText = """
+        parent.acknowledgementText = _("""
 This work is supported by NA-MIC, NAC, BIRN, NCIGT, and the Slicer Community. See <a>https://www.slicer.org</a> for details.
 This work is partially supported by PAR-07-249: R01CA131718 NA-MIC Virtual Colonoscopy (See <a href=https://www.slicer.org>https://www.na-mic.org/Wiki/index.php/NA-MIC_NCBC_Collaboration:NA-MIC_virtual_colonoscopy</a>).
-"""
+""")
 
         # Set module icon from Resources/Icons/<ModuleName>.png
         moduleDir = os.path.dirname(self.parent.path)
@@ -50,17 +50,17 @@ This work is partially supported by PAR-07-249: R01CA131718 NA-MIC Virtual Colon
         slicer.selfTests[self.moduleName] = self.runTest
 
     def resourcePath(self, filename):
-        """Return the absolute path of the module ``Resources`` directory.
-        """
+        _("""Return the absolute path of the module ``Resources`` directory.
+        """)
         scriptedModulesPath = os.path.dirname(self.parent.path)
-        return os.path.join(scriptedModulesPath, 'Resources', filename)
+        return os.path.join(scriptedModulesPath, _("Resources"), filename)
 
     def getDefaultModuleDocumentationLink(self, docPage=None):
-        """Return string that can be inserted into the application help text that contains
+        _("""Return string that can be inserted into the application help text that contains
         link to the module's documentation in current Slicer version's documentation.
         The text is "For more information see the online documentation."
         If docPage is not specified then the link points to URL returned by :func:`slicer.app.moduleDocumentationUrl`.
-        """
+        """)
         if docPage:
             url = slicer.app.documentationBaseUrl + docPage
         else:
@@ -69,12 +69,12 @@ This work is partially supported by PAR-07-249: R01CA131718 NA-MIC Virtual Colon
         return linkText
 
     def runTest(self, msec=100, **kwargs):
-        """
+        _("""
         :param msec: delay to associate with :func:`ScriptedLoadableModuleTest.delayDisplay()`.
-        """
+        """)
         # Name of the test case class is expected to be <ModuleName>Test
         module = importlib.import_module(self.__module__)
-        className = self.moduleName + 'Test'
+        className = self.moduleName + _("Test")
         try:
             TestCaseClass = getattr(module, className)
         except AttributeError:
@@ -88,15 +88,15 @@ This work is partially supported by PAR-07-249: R01CA131718 NA-MIC Virtual Colon
 
 class ScriptedLoadableModuleWidget:
     def __init__(self, parent=None):
-        """If parent widget is not specified: a top-level widget is created automatically;
+        _("""If parent widget is not specified: a top-level widget is created automatically;
         the application has to delete this widget (by calling widget.parent.deleteLater() to avoid memory leaks.
-        """
+        """)
         super().__init__()
-        # Get module name by stripping 'Widget' from the class name
+        # Get module name by stripping _("Widget") from the class name
         self.moduleName = self.__class__.__name__
-        if self.moduleName.endswith('Widget'):
+        if self.moduleName.endswith(_("Widget")):
             self.moduleName = self.moduleName[:-6]
-        self.developerMode = slicer.util.settingsValue('Developer/DeveloperMode', False, converter=slicer.util.toBool)
+        self.developerMode = slicer.util.settingsValue(_("Developer/DeveloperMode"), False, converter=slicer.util.toBool)
         if not parent:
             self.parent = slicer.qMRMLWidget()
             self.parent.setLayout(qt.QVBoxLayout())
@@ -108,31 +108,31 @@ class ScriptedLoadableModuleWidget:
             self.setup()
             self.parent.show()
         slicer.app.moduleManager().connect(
-            'moduleAboutToBeUnloaded(QString)', self._onModuleAboutToBeUnloaded)
+            _("moduleAboutToBeUnloaded(QString)"), self._onModuleAboutToBeUnloaded)
 
     def resourcePath(self, filename):
-        """Return the absolute path of the module ``Resources`` directory.
-        """
+        _("""Return the absolute path of the module ``Resources`` directory.
+        """)
         scriptedModulesPath = os.path.dirname(slicer.util.modulePath(self.moduleName))
-        return os.path.join(scriptedModulesPath, 'Resources', filename)
+        return os.path.join(scriptedModulesPath, _("Resources"), filename)
 
     def cleanup(self):
-        """Override this function to implement module widget specific cleanup.
+        _("""Override this function to implement module widget specific cleanup.
 
         It is invoked when the signal `qSlicerModuleManager::moduleAboutToBeUnloaded(QString)`
         corresponding to the current module is emitted and just before a module is
         effectively unloaded.
-        """
+        """)
         pass
 
     def _onModuleAboutToBeUnloaded(self, moduleName):
-        """This slot calls `cleanup()` if the module about to be unloaded is the
+        _("""This slot calls `cleanup()` if the module about to be unloaded is the
         current one.
-        """
+        """)
         if moduleName == self.moduleName:
             self.cleanup()
             slicer.app.moduleManager().disconnect(
-                'moduleAboutToBeUnloaded(QString)', self._onModuleAboutToBeUnloaded)
+                _("moduleAboutToBeUnloaded(QString)"), self._onModuleAboutToBeUnloaded)
 
     def setupDeveloperSection(self):
         if not self.developerMode:
@@ -150,42 +150,42 @@ class ScriptedLoadableModuleWidget:
         # developer mode is turned off.
 
         self.reloadCollapsibleButton = ctk.ctkCollapsibleButton()
-        self.reloadCollapsibleButton.text = "Reload && Test"
+        self.reloadCollapsibleButton.text = _("Reload && Test")
         self.layout.addWidget(self.reloadCollapsibleButton)
         reloadFormLayout = qt.QFormLayout(self.reloadCollapsibleButton)
 
         # reload button
-        self.reloadButton = qt.QPushButton("Reload")
-        self.reloadButton.toolTip = "Reload this module."
-        self.reloadButton.name = "ScriptedLoadableModuleTemplate Reload"
-        self.reloadButton.connect('clicked()', self.onReload)
+        self.reloadButton = qt.QPushButton(_("Reload"))
+        self.reloadButton.toolTip = _("Reload this module.")
+        self.reloadButton.name = _("ScriptedLoadableModuleTemplate Reload")
+        self.reloadButton.connect(_("clicked()"), self.onReload)
 
         # reload and test button
-        self.reloadAndTestButton = qt.QPushButton("Reload and Test")
-        self.reloadAndTestButton.toolTip = "Reload this module and then run the self tests."
-        self.reloadAndTestButton.connect('clicked()', self.onReloadAndTest)
+        self.reloadAndTestButton = qt.QPushButton(_("Reload and Test"))
+        self.reloadAndTestButton.toolTip = _("Reload this module and then run the self tests.")
+        self.reloadAndTestButton.connect(_("clicked()"), self.onReloadAndTest)
 
         # edit python source code
-        self.editSourceButton = qt.QPushButton("Edit")
-        self.editSourceButton.toolTip = "Edit the module's source code."
-        self.editSourceButton.connect('clicked()', self.onEditSource)
+        self.editSourceButton = qt.QPushButton(_("Edit"))
+        self.editSourceButton.toolTip = _("Edit the module's source code.")
+        self.editSourceButton.connect(_("clicked()"), self.onEditSource)
 
         self.editModuleUiButton = None
-        moduleUiFileName = self.resourcePath('UI/%s.ui' % self.moduleName)
+        moduleUiFileName = self.resourcePath(_("UI/%s.ui") % self.moduleName)
         import os.path
         if os.path.isfile(moduleUiFileName):
             # Module UI file exists
-            self.editModuleUiButton = qt.QPushButton("Edit UI")
-            self.editModuleUiButton.toolTip = "Edit the module's .ui file."
-            self.editModuleUiButton.connect('clicked()', lambda filename=moduleUiFileName: slicer.util.startQtDesigner(moduleUiFileName))
+            self.editModuleUiButton = qt.QPushButton(_("Edit UI"))
+            self.editModuleUiButton.toolTip = _("Edit the module's .ui file.")
+            self.editModuleUiButton.connect(_("clicked()"), lambda filename=moduleUiFileName: slicer.util.startQtDesigner(moduleUiFileName))
 
         # restart Slicer button
         # (use this during development, but remove it when delivering
         #  your module to users)
-        self.restartButton = qt.QPushButton("Restart Slicer")
-        self.restartButton.toolTip = "Restart Slicer"
-        self.restartButton.name = "ScriptedLoadableModuleTemplate Restart"
-        self.restartButton.connect('clicked()', slicer.app.restart)
+        self.restartButton = qt.QPushButton(_("Restart Slicer"))
+        self.restartButton.toolTip = _("Restart Slicer")
+        self.restartButton.name = _("ScriptedLoadableModuleTemplate Restart")
+        self.restartButton.connect(_("clicked()"), slicer.app.restart)
 
         if self.editModuleUiButton:
             # There are many buttons, distribute them in two rows
@@ -199,41 +199,41 @@ class ScriptedLoadableModuleWidget:
         self.setupDeveloperSection()
 
     def onReload(self):
-        """
+        _("""
         Reload scripted module widget representation.
-        """
+        """)
 
         # Print a clearly visible separator to make it easier
         # to distinguish new error messages (during/after reload)
         # from old ones.
         print('\n' * 2)
         print('-' * 30)
-        print('Reloading module: ' + self.moduleName)
+        print(_("Reloading module: ") + self.moduleName)
         print('-' * 30)
         print('\n' * 2)
 
         slicer.util.reloadScriptedModule(self.moduleName)
 
     def onReloadAndTest(self, **kwargs):
-        """Reload scripted module widget representation and call :func:`ScriptedLoadableModuleTest.runTest()`
+        _("""Reload scripted module widget representation and call :func:`ScriptedLoadableModuleTest.runTest()`
         passing ``kwargs``.
-        """
-        with slicer.util.tryWithErrorDisplay("Reload and Test failed."):
+        """)
+        with slicer.util.tryWithErrorDisplay(_("Reload and Test failed.")):
             self.onReload()
             test = slicer.selfTests[self.moduleName]
-            test(msec=int(slicer.app.userSettings().value("Developer/SelfTestDisplayMessageDelay")), **kwargs)
+            test(msec=int(slicer.app.userSettings().value(_("Developer/SelfTestDisplayMessageDelay"))), **kwargs)
 
     def onEditSource(self):
         filePath = slicer.util.modulePath(self.moduleName)
-        qt.QDesktopServices.openUrl(qt.QUrl("file:///" + filePath, qt.QUrl.TolerantMode))
+        qt.QDesktopServices.openUrl(qt.QUrl(_("file:///") + filePath, qt.QUrl.TolerantMode))
 
 
 class ScriptedLoadableModuleLogic:
     def __init__(self, parent=None):
         super().__init__()
-        # Get module name by stripping 'Logic' from the class name
+        # Get module name by stripping _("Logic") from the class name
         self.moduleName = self.__class__.__name__
-        if self.moduleName.endswith('Logic'):
+        if self.moduleName.endswith(_("Logic")):
             self.moduleName = self.moduleName[:-5]
 
         # If parameter node is singleton then only one parameter node
@@ -243,68 +243,68 @@ class ScriptedLoadableModuleLogic:
         self.isSingletonParameterNode = True
 
     def getParameterNode(self):
-        """
+        _("""
         Return the first available parameter node for this module
         If no parameter nodes are available for this module then a new one is created.
-        """
+        """)
         if self.isSingletonParameterNode:
-            parameterNode = slicer.mrmlScene.GetSingletonNode(self.moduleName, "vtkMRMLScriptedModuleNode")
+            parameterNode = slicer.mrmlScene.GetSingletonNode(self.moduleName, _("vtkMRMLScriptedModuleNode"))
             if parameterNode:
                 # After close scene, ModuleName attribute may be removed, restore it now
-                if parameterNode.GetAttribute("ModuleName") != self.moduleName:
-                    parameterNode.SetAttribute("ModuleName", self.moduleName)
+                if parameterNode.GetAttribute(_("ModuleName")) != self.moduleName:
+                    parameterNode.SetAttribute(_("ModuleName"), self.moduleName)
                 return parameterNode
         else:
-            numberOfScriptedModuleNodes = slicer.mrmlScene.GetNumberOfNodesByClass("vtkMRMLScriptedModuleNode")
+            numberOfScriptedModuleNodes = slicer.mrmlScene.GetNumberOfNodesByClass(_("vtkMRMLScriptedModuleNode"))
             for nodeIndex in range(numberOfScriptedModuleNodes):
-                parameterNode = slicer.mrmlScene.GetNthNodeByClass(nodeIndex, "vtkMRMLScriptedModuleNode")
-                if parameterNode.GetAttribute("ModuleName") == self.moduleName:
+                parameterNode = slicer.mrmlScene.GetNthNodeByClass(nodeIndex, _("vtkMRMLScriptedModuleNode"))
+                if parameterNode.GetAttribute(_("ModuleName")) == self.moduleName:
                     return parameterNode
         # no parameter node was found for this module, therefore we add a new one now
         parameterNode = slicer.mrmlScene.AddNode(self.createParameterNode())
         return parameterNode
 
     def getAllParameterNodes(self):
-        """
+        _("""
         Return a list of all parameter nodes for this module
         Multiple parameter nodes are useful for storing multiple parameter sets in a single scene.
-        """
+        """)
         foundParameterNodes = []
-        numberOfScriptedModuleNodes = slicer.mrmlScene.GetNumberOfNodesByClass("vtkMRMLScriptedModuleNode")
+        numberOfScriptedModuleNodes = slicer.mrmlScene.GetNumberOfNodesByClass(_("vtkMRMLScriptedModuleNode"))
         for nodeIndex in range(numberOfScriptedModuleNodes):
-            parameterNode = slicer.mrmlScene.GetNthNodeByClass(nodeIndex, "vtkMRMLScriptedModuleNode")
-            if parameterNode.GetAttribute("ModuleName") == self.moduleName:
+            parameterNode = slicer.mrmlScene.GetNthNodeByClass(nodeIndex, _("vtkMRMLScriptedModuleNode"))
+            if parameterNode.GetAttribute(_("ModuleName")) == self.moduleName:
                 foundParameterNodes.append(parameterNode)
         return foundParameterNodes
 
     def createParameterNode(self):
-        """
+        _("""
         Create a new parameter node
         The node is of vtkMRMLScriptedModuleNode class. Module name is added as an attribute to allow filtering
         in node selector widgets (attribute name: ModuleName, attribute value: the module's name).
         This method can be overridden in derived classes to create a default parameter node with all
         parameter values set to their default.
-        """
+        """)
         if slicer.mrmlScene is None:
             return
 
-        node = slicer.mrmlScene.CreateNodeByClass("vtkMRMLScriptedModuleNode")
+        node = slicer.mrmlScene.CreateNodeByClass(_("vtkMRMLScriptedModuleNode"))
         node.UnRegister(None)  # object is owned by the Python variable now
         if self.isSingletonParameterNode:
             node.SetSingletonTag(self.moduleName)
         # Add module name in an attribute to allow filtering in node selector widgets
         # Note that SetModuleName is not used anymore as it would be redundant with the ModuleName attribute.
-        node.SetAttribute("ModuleName", self.moduleName)
+        node.SetAttribute(_("ModuleName"), self.moduleName)
         node.SetName(slicer.mrmlScene.GenerateUniqueName(self.moduleName))
         return node
 
 
 class ScriptedLoadableModuleTest(unittest.TestCase):
-    """
+    _("""
     Base class for module tester class.
     Setting messageDelay to something small, like 50ms allows
     faster development time.
-    """
+    """)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -319,7 +319,7 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
         self.screenshotScaleFactor = 1.0
 
     def delayDisplay(self, message, requestedDelay=None, msec=None):
-        """
+        _("""
         Display messages to the user/tester during testing.
 
         By default, the delay is 50ms.
@@ -344,8 +344,8 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
         function (printed to application log only).
         Error messages should be logged by logging.error() function
         and displayed to user by slicer.util.errorDisplay function.
-        """
-        if hasattr(self, "messageDelay"):
+        """)
+        if hasattr(self, _("messageDelay")):
             msec = self.messageDelay
         if msec is None:
             msec = requestedDelay
@@ -355,7 +355,7 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
         slicer.util.delayDisplay(message, msec)
 
     def takeScreenshot(self, name, description, type=-1):
-        """ Take a screenshot of the selected viewport and store as and
+        _(""" Take a screenshot of the selected viewport and store as and
         annotation snapshot node. Convenience method for automated testing.
 
         If self.enableScreenshots is False then only a message is displayed but screenshot
@@ -367,7 +367,7 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
             Valid values: slicer.qMRMLScreenShotDialog.FullLayout,
             slicer.qMRMLScreenShotDialog.ThreeD, slicer.qMRMLScreenShotDialog.Red,
             slicer.qMRMLScreenShotDialog.Yellow, slicer.qMRMLScreenShotDialog.Green.
-        """
+        """)
 
         # show the message even if not taking a screen shot
         self.delayDisplay(description)
@@ -386,13 +386,13 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
             widget = lm.threeDWidget(0).threeDView()
         elif type == slicer.qMRMLScreenShotDialog.Red:
             # red slice window
-            widget = lm.sliceWidget("Red")
+            widget = lm.sliceWidget(_("Red"))
         elif type == slicer.qMRMLScreenShotDialog.Yellow:
             # yellow slice window
-            widget = lm.sliceWidget("Yellow")
+            widget = lm.sliceWidget(_("Yellow"))
         elif type == slicer.qMRMLScreenShotDialog.Green:
             # green slice window
-            widget = lm.sliceWidget("Green")
+            widget = lm.sliceWidget(_("Green"))
         else:
             # default to using the full window
             widget = slicer.util.mainWindow()
@@ -408,7 +408,7 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
         annotationLogic.CreateSnapShot(name, description, type, self.screenshotScaleFactor, imageData)
 
     def runTest(self):
-        """
+        _("""
         Run a default selection of tests here.
-        """
-        logging.warning('No test is defined in ' + self.__class__.__name__)
+        """)
+        logging.warning(_("No test is defined in ") + self.__class__.__name__)
