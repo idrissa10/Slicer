@@ -70,12 +70,12 @@ class DMRIInstall(ScriptedLoadableModule):
         self.parent.contributors = ["Isaiah Norton (BWH), Lauren O'Donnell (BWH)"]
         self.parent.helpText = DMRIInstall.helpText
         self.parent.helpText += self.getDefaultModuleDocumentationLink()
-        self.parent.acknowledgementText = textwrap.dedent(
+        self.parent.acknowledgementText = textwrap.dedent_((
             """
     SlicerDMRI supported by NIH NCI ITCR U01CA199459 (Open Source Diffusion MRI
     Technology For Brain Cancer Research), and made possible by NA-MIC, NAC,
     BIRN, NCIGT, and the Slicer Community.
-    """)
+    """))
 
 
 class DMRIInstallWidget(ScriptedLoadableModuleWidget):

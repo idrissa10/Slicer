@@ -50,17 +50,17 @@ This work is partially supported by PAR-07-249: R01CA131718 NA-MIC Virtual Colon
         slicer.selfTests[self.moduleName] = self.runTest
 
     def resourcePath(self, filename):
-        _("""Return the absolute path of the module ``Resources`` directory.
-        """)
+        """Return the absolute path of the module ``Resources`` directory.
+        """
         scriptedModulesPath = os.path.dirname(self.parent.path)
         return os.path.join(scriptedModulesPath, _("Resources"), filename)
 
     def getDefaultModuleDocumentationLink(self, docPage=None):
-        _("""Return string that can be inserted into the application help text that contains
+        """Return string that can be inserted into the application help text that contains
         link to the module's documentation in current Slicer version's documentation.
         The text is "For more information see the online documentation."
         If docPage is not specified then the link points to URL returned by :func:`slicer.app.moduleDocumentationUrl`.
-        """)
+        """
         if docPage:
             url = slicer.app.documentationBaseUrl + docPage
         else:
@@ -69,9 +69,9 @@ This work is partially supported by PAR-07-249: R01CA131718 NA-MIC Virtual Colon
         return linkText
 
     def runTest(self, msec=100, **kwargs):
-        _("""
+        """
         :param msec: delay to associate with :func:`ScriptedLoadableModuleTest.delayDisplay()`.
-        """)
+        """
         # Name of the test case class is expected to be <ModuleName>Test
         module = importlib.import_module(self.__module__)
         className = self.moduleName + _("Test")
@@ -265,30 +265,30 @@ class ScriptedLoadableModuleLogic:
         return parameterNode
 
     def getAllParameterNodes(self):
-        _("""
+        """
         Return a list of all parameter nodes for this module
         Multiple parameter nodes are useful for storing multiple parameter sets in a single scene.
-        """)
+        """
         foundParameterNodes = []
-        numberOfScriptedModuleNodes = slicer.mrmlScene.GetNumberOfNodesByClass(_("vtkMRMLScriptedModuleNode"))
+        numberOfScriptedModuleNodes = slicer.mrmlScene.GetNumberOfNodesByClass("vtkMRMLScriptedModuleNode")
         for nodeIndex in range(numberOfScriptedModuleNodes):
-            parameterNode = slicer.mrmlScene.GetNthNodeByClass(nodeIndex, _("vtkMRMLScriptedModuleNode"))
-            if parameterNode.GetAttribute(_("ModuleName")) == self.moduleName:
+            parameterNode = slicer.mrmlScene.GetNthNodeByClass(nodeIndex, "vtkMRMLScriptedModuleNode")
+            if parameterNode.GetAttribute("ModuleName") == self.moduleName:
                 foundParameterNodes.append(parameterNode)
         return foundParameterNodes
 
     def createParameterNode(self):
-        _("""
+        """
         Create a new parameter node
         The node is of vtkMRMLScriptedModuleNode class. Module name is added as an attribute to allow filtering
         in node selector widgets (attribute name: ModuleName, attribute value: the module's name).
         This method can be overridden in derived classes to create a default parameter node with all
         parameter values set to their default.
-        """)
+        """
         if slicer.mrmlScene is None:
             return
 
-        node = slicer.mrmlScene.CreateNodeByClass(_("vtkMRMLScriptedModuleNode"))
+        node = slicer.mrmlScene.CreateNodeByClass("vtkMRMLScriptedModuleNode")
         node.UnRegister(None)  # object is owned by the Python variable now
         if self.isSingletonParameterNode:
             node.SetSingletonTag(self.moduleName)
@@ -300,11 +300,11 @@ class ScriptedLoadableModuleLogic:
 
 
 class ScriptedLoadableModuleTest(unittest.TestCase):
-    _("""
+    """
     Base class for module tester class.
     Setting messageDelay to something small, like 50ms allows
     faster development time.
-    """)
+    """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -319,7 +319,7 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
         self.screenshotScaleFactor = 1.0
 
     def delayDisplay(self, message, requestedDelay=None, msec=None):
-        _("""
+        """
         Display messages to the user/tester during testing.
 
         By default, the delay is 50ms.
@@ -344,7 +344,7 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
         function (printed to application log only).
         Error messages should be logged by logging.error() function
         and displayed to user by slicer.util.errorDisplay function.
-        """)
+        """
         if hasattr(self, _("messageDelay")):
             msec = self.messageDelay
         if msec is None:
@@ -355,7 +355,7 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
         slicer.util.delayDisplay(message, msec)
 
     def takeScreenshot(self, name, description, type=-1):
-        _(""" Take a screenshot of the selected viewport and store as and
+        """ Take a screenshot of the selected viewport and store as and
         annotation snapshot node. Convenience method for automated testing.
 
         If self.enableScreenshots is False then only a message is displayed but screenshot
@@ -367,7 +367,7 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
             Valid values: slicer.qMRMLScreenShotDialog.FullLayout,
             slicer.qMRMLScreenShotDialog.ThreeD, slicer.qMRMLScreenShotDialog.Red,
             slicer.qMRMLScreenShotDialog.Yellow, slicer.qMRMLScreenShotDialog.Green.
-        """)
+        """
 
         # show the message even if not taking a screen shot
         self.delayDisplay(description)
@@ -408,7 +408,7 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
         annotationLogic.CreateSnapShot(name, description, type, self.screenshotScaleFactor, imageData)
 
     def runTest(self):
-        _("""
+        """
         Run a default selection of tests here.
-        """)
-        logging.warning(_("No test is defined in ") + self.__class__.__name__)
+        """
+        logging.warning("No test is defined in " + self.__class__.__name__)

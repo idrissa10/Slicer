@@ -26,18 +26,18 @@ class ExampleSelfTests:
 class SelfTests(ScriptedLoadableModule):
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
-        self.parent.title = _("SelfTests")
-        self.parent.categories = [_("Testing")]
+        self.parent.title = "SelfTests"
+        self.parent.categories = ["Testing"]
         self.parent.contributors = ["Steve Pieper (Isomics)"]
-        self.parent.helpText = _("""
+        self.parent.helpText = """
 The SelfTests module allows developers to provide built-in self-tests (BIST) for slicer so that users can tell
 if their installed version of slicer are running as designed.
-""")
+"""
         self.parent.helpText += self.getDefaultModuleDocumentationLink()
-        self.parent.acknowledgementText = _("""
+        self.parent.acknowledgementText = """
 This work is part of SparKit project, funded by Cancer Care Ontario (CCO)'s ACRU program
 and Ontario Consortium for Adaptive Interventions in Radiation Oncology (OCAIRO).
-""")
+"""
 
         #
         # slicer.selfTests is a dictionary of tests that are registered
@@ -86,11 +86,11 @@ class SelfTestsWidget(ScriptedLoadableModuleWidget):
 
         self.testList = ctk.ctkCollapsibleButton(self.parent)
         self.testList.setLayout(qt.QVBoxLayout())
-        self.testList.setText(_("Self Tests"))
+        self.testList.setText("Self Tests")
         self.layout.addWidget(self.testList)
         self.testList.collapsed = False
 
-        self.runAll = qt.QPushButton(_("Run All"))
+        self.runAll = qt.QPushButton("Run All")
         self.testList.layout().addWidget(self.runAll)
         self.runAll.connect('clicked()', self.onRunAll)
 
@@ -110,11 +110,11 @@ class SelfTestsWidget(ScriptedLoadableModuleWidget):
 
     def onRunAll(self):
         self.logic.run(continueCheck=self.continueCheck)
-        slicer.util.infoDisplay(self.logic, windowTitle=_("SelfTests"))
+        slicer.util.infoDisplay(self.logic, windowTitle="SelfTests")
 
     def onRun(self, test):
         self.logic.run([test, ], continueCheck=self.continueCheck)
-        slicer.util.infoDisplay(self.logic, windowTitle=_("SelfTests"))
+        slicer.util.infoDisplay(self.logic, windowTitle="SelfTests")
 
     def continueCheck(self, logic):
         slicer.app.processEvents(qt.QEventLoop.ExcludeUserInputEvents)
@@ -165,7 +165,7 @@ def SelfTestsTest():
         logic = SelfTestsLogic(list(slicer.selfTests.keys()))
         logic.run()
     print(logic.results)
-    print(_("SelfTestsTest Passed!"))
+    print("SelfTestsTest Passed!")
     return logic.failed == []
 
 

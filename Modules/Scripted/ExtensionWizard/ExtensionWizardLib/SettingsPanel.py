@@ -28,14 +28,14 @@ class _ui_SettingsPanel:
         self.addRow(_("Built-in template path:"), self.builtinPath)
 
         self.genericPaths = DirectoryListWidget()
-        self.addRow("Additional template\npaths:", self.genericPaths)
+        self.addRow_(("Additional template\npaths:"), self.genericPaths)
 
         self.paths = {}
 
         for category in SlicerWizard.TemplateManager.categories():
             self.paths[category] = DirectoryListWidget()
-            self.addRow("Additional template\npaths for %s:" % category,
-                        self.paths[category])
+            self.addRow_(("Additional template\npaths for %s:") % category,
+                         self.paths[category])
 
     # ---------------------------------------------------------------------------
     def addRow(self, label, widget):

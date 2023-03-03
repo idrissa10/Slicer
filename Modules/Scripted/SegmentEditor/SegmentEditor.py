@@ -175,5 +175,5 @@ class SegmentEditorTest(ScriptedLoadableModuleTest):
     def test_SegmentEditor1(self):
         """Add test here later.
         """
-        self.delayDisplay("Starting the test")
-        self.delayDisplay('Test passed!')
+        self.delayDisplay(_("Starting the test"))
+        self.delayDisplay(_('Test passed!'))

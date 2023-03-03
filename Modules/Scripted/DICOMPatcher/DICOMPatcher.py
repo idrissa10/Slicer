@@ -64,41 +64,45 @@ class DICOMPatcherWidget(ScriptedLoadableModuleWidget):
 
         self.normalizeFileNamesCheckBox = qt.QCheckBox()
         self.normalizeFileNamesCheckBox.checked = True
-        self.normalizeFileNamesCheckBox.setToolTip("Replace file and folder names with automatically generated names."
-                                                   " Fixes errors caused by file path containins special characters or being too long.")
+        self.normalizeFileNamesCheckBox.setToolTip(_("Replace file and folder names with automatically generated names."
+                                                     " Fixes errors caused by file path containins special characters or being too long."))
         parametersFormLayout.addRow(_("Normalize file names"), self.normalizeFileNamesCheckBox)
 
         self.forceSamePatientNameIdInEachDirectoryCheckBox = qt.QCheckBox()
         self.forceSamePatientNameIdInEachDirectoryCheckBox.checked = False
-        self.forceSamePatientNameIdInEachDirectoryCheckBox.setToolTip("Generate patient name and ID from the first file in a directory"
+        self.forceSamePatientNameIdInEachDirectoryCheckBox.setToolTip(_("Generate patient name and ID from the first file in a directory"
                                                                       " and force all other files in the same directory to have the same patient name and ID."
-                                                                      " Enable this option if a separate patient directory is created for each patched file.")
+                                                                      " Enable this option if a separate patient directory is created for each patched file."))
+                                                                        "is created for each patched file."))
         parametersFormLayout.addRow(_("Force same patient name and ID in each directory"), self.forceSamePatientNameIdInEachDirectoryCheckBox)
 
         self.forceSameSeriesInstanceUidInEachDirectoryCheckBox = qt.QCheckBox()
         self.forceSameSeriesInstanceUidInEachDirectoryCheckBox.checked = False
-        self.forceSameSeriesInstanceUidInEachDirectoryCheckBox.setToolTip("Generate a new series instance UID for each directory"
-                                                                          " and set it in all files in that same directory."
-                                                                          " Enable this option to force placing all frames in a folder into a single volume.")
+        self.forceSameSeriesInstanceUidInEachDirectoryCheckBox.setToolTip(_("Generate a new series instance UID for each directory"
+                                                                            " and set it in all files in that same directory."
+                                                                            " Enable this option to force placing all frames "
+                                                                            "in a folder into a single volume."))
         parametersFormLayout.addRow(_("Force same series instance UID in each directory"), self.forceSameSeriesInstanceUidInEachDirectoryCheckBox)
 
         self.generateMissingIdsCheckBox = qt.QCheckBox()
         self.generateMissingIdsCheckBox.checked = True
-        self.generateMissingIdsCheckBox.setToolTip("Generate missing patient, study, series IDs. It is assumed that"
-                                                   " all files in a directory belong to the same series. Fixes error caused by too aggressive anonymization"
-                                                   " or incorrect DICOM image converters.")
+        self.generateMissingIdsCheckBox.setToolTip(_("Generate missing patient, study, series IDs. It is assumed that"
+                                                     " all files in a directory belong to the same series. Fixes error caused by too aggressive anonymization"
+                                                     " or incorrect DICOM image converters."))
         parametersFormLayout.addRow(_("Generate missing patient/study/series IDs"), self.generateMissingIdsCheckBox)
 
         self.generateImagePositionFromSliceThicknessCheckBox = qt.QCheckBox()
         self.generateImagePositionFromSliceThicknessCheckBox.checked = True
-        self.generateImagePositionFromSliceThicknessCheckBox.setToolTip("Generate 'image position sequence' for"
+        self.generateImagePositionFromSliceThicknessCheckBox.setToolTip(_("Generate 'image position sequence' for "
                                                                         " multi-frame files that only have 'SliceThickness' field. Fixes error in Dolphin 3D CBCT scanners.")
+                                                                          "Fixes error in Dolphin 3D CBCT scanners."))
         parametersFormLayout.addRow(_("Generate slice position for multi-frame volumes"), self.generateImagePositionFromSliceThicknessCheckBox)
 
         self.anonymizeDicomCheckBox = qt.QCheckBox()
         self.anonymizeDicomCheckBox.checked = False
-        self.anonymizeDicomCheckBox.setToolTip("If checked, then some patient identifiable information will be removed"
-                                               " from the patched DICOM files. There are many fields that can identify a patient, this function does not remove all of them.")
+        self.anonymizeDicomCheckBox.setToolTip(_("If checked, then some patient identifiable information will be removed"
+                                               " from the patched DICOM files. There are many fields that can identify a patient, "
+                                                 "this function does not remove all of them."))
         parametersFormLayout.addRow(_("Partially anonymize"), self.anonymizeDicomCheckBox)
 
         #

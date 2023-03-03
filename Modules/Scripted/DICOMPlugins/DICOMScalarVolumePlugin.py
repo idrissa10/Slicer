@@ -74,17 +74,17 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
         readersComboBox = qt.QComboBox()
         for approach in DICOMScalarVolumePluginClass.readerApproaches():
             readersComboBox.addItem(approach)
-        readersComboBox.toolTip = ("Preferred back end.  Archetype was used by default in Slicer before June of 2017."
-                                   "Change this setting if data that previously loaded stops working (and report an issue).")
+        readersComboBox.toolTip = _(("Preferred back end.  Archetype was used by default in Slicer before June of 2017."
+                                     "Change this setting if data that previously loaded stops working (and report an issue)."))
         formLayout.addRow(_("DICOM reader approach:"), readersComboBox)
         panel.registerProperty(
             "DICOM/ScalarVolume/ReaderApproach", readersComboBox,
             "currentIndex", str(qt.SIGNAL("currentIndexChanged(int)")))
 
         importFormatsComboBox = ctk.ctkComboBox()
-        importFormatsComboBox.toolTip = ("Enable adding non-linear transform to regularize images acquired irregular geometry:"
-                                         " non-rectilinear grid (such as tilted gantry CT acquisitions) and non-uniform slice spacing."
-                                         " If no regularization is applied then image may appear distorted if it was acquired with irregular geometry.")
+        importFormatsComboBox.toolTip = _(("Enable adding non-linear transform to regularize images acquired irregular geometry:"
+                                           " non-rectilinear grid (such as tilted gantry CT acquisitions) and non-uniform slice spacing."
+                                           " If no regularization is applied then image may appear distorted if it was acquired with irregular geometry."))
 
         importFormatsComboBox.addItem(_("default (apply regularization transform)"), _("default"))
         importFormatsComboBox.addItem(_("none"), _("none"))
@@ -100,9 +100,10 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
         # DICOM examination settings are cached so we need to restart to make sure changes take effect
 
         allowLoadingByTimeCheckBox = qt.QCheckBox()
-        allowLoadingByTimeCheckBox.toolTip = ("Offer loading of individual slices or group of slices"
-                                              " that were acquired at a specific time (content or trigger time)."
-                                              " If this option is enabled then a large number of loadable items may be displayed in the Advanced section of DICOM browser.")
+        allowLoadingByTimeCheckBox.toolTip = _(("Offer loading of individual slices or group of slices"
+                                                " that were acquired at a specific time (content or trigger time)."
+                                                " If this option is enabled then a large number of loadable items may"
+                                                "be displayed in the Advanced section of DICOM browser."))
         formLayout.addRow(_("Allow loading subseries by time:"), allowLoadingByTimeCheckBox)
         allowLoadingByTimeMapper = ctk.ctkBooleanMapper(allowLoadingByTimeCheckBox, "checked", str(qt.SIGNAL("toggled(bool)")))
         panel.registerProperty(

@@ -46,7 +46,7 @@ class PerformanceTestsWidget(ScriptedLoadableModuleWidget):
         self.log = qt.QTextEdit()
         self.log.readOnly = True
         self.layout.addWidget(self.log)
-        self.log.insertHtml('<p>Status: <i>Idle</i>\n')
+        self.log.insertHtml(_('<p>Status: <i>Idle</i>\n'))
         self.log.insertPlainText('\n')
         self.log.ensureCursorVisible()
 
@@ -59,11 +59,11 @@ class PerformanceTestsWidget(ScriptedLoadableModuleWidget):
         self.log.repaint()
         mrHeadVolume = SampleData.downloadSample("MRHead")
         if mrHeadVolume:
-            self.log.insertHtml('<i>finished.</i>\n')
+            self.log.insertHtml(_('<i>finished.</i>\n'))
             self.log.insertPlainText('\n')
             self.log.repaint()
         else:
-            self.log.insertHtml('<b>Download failed!</b>\n')
+            self.log.insertHtml(_('<b>Download failed!</b>\n'))
             self.log.insertPlainText('\n')
             self.log.repaint()
         self.log.ensureCursorVisible()

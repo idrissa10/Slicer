@@ -305,7 +305,7 @@ class CropVolumeSequenceTest(ScriptedLoadableModuleTest):
 
     def test_CropVolumeSequence1(self):
 
-        self.delayDisplay("Starting the test")
+        self.delayDisplay_(("Starting the test"))
 
         # Load volume sequence
         import SampleData

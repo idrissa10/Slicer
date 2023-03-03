@@ -449,7 +449,7 @@ def main():
     )
     parser_query.add_argument(
         "--acknowledgments-main-version", action="store_true",
-        help= "display the version associated with page "
+        help="display the version associated with page "
         "'Template:Documentation/acknowledgments-versionlist'"
     )
     parser_query.add_argument(
@@ -516,4 +516,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print(_("interrupt received, stopping..."))
+        print("interrupt received, stopping...")

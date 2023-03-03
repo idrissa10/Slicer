@@ -15,8 +15,8 @@ class ImportItkSnapLabel(ScriptedLoadableModule):
         self.parent.categories = [_("Informatics")]
         self.parent.dependencies = []
         self.parent.contributors = ["Andras Lasso (PerkLab)"]
-        self.parent.helpText = _(_("Load ITK-Snap label description file (.label or .txt)."))
-        self.parent.acknowledgementText = _(_("This file was originally developed by Andras Lasso, PerkLab."))
+        self.parent.helpText = (_("Load ITK-Snap label description file (.label or .txt)."))
+        self.parent.acknowledgementText = (_("This file was originally developed by Andras Lasso, PerkLab."))
         # don't show this module - it is only for registering a reader
         parent.hidden = True
 
