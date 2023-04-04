@@ -11,12 +11,12 @@ from slicer.ScriptedLoadableModule import *
 class ImportItkSnapLabel(ScriptedLoadableModule):
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
-        self.parent.title = "ImportItkSnapLabel"
-        self.parent.categories = ["Informatics"]
+        self.parent.title = _("ImportItkSnapLabel")
+        self.parent.categories = [_("Informatics")]
         self.parent.dependencies = []
         self.parent.contributors = ["Andras Lasso (PerkLab)"]
-        self.parent.helpText = """Load ITK-Snap label description file (.label or .txt)."""
-        self.parent.acknowledgementText = """This file was originally developed by Andras Lasso, PerkLab."""
+        self.parent.helpText = _("""Load ITK-Snap label description file (.label or .txt).""")
+        self.parent.acknowledgementText = _("""This file was originally developed by Andras Lasso, PerkLab.""")
         # don't show this module - it is only for registering a reader
         parent.hidden = True
 
@@ -150,13 +150,13 @@ class ImportItkSnapLabelTest(ScriptedLoadableModuleTest):
 
     def test_ImportItkSnapLabel1(self):
 
-        self.delayDisplay("Loading test image as label")
+        self.delayDisplay(_("Loading test image as label"))
         testDataPath = os.path.join(os.path.dirname(__file__), 'Resources')
         labelFilePath = os.path.join(testDataPath, 'Untitled.label')
         node = slicer.util.loadNodeFromFile(labelFilePath, 'ItkSnapLabel')
         self.assertIsNotNone(node)
 
-        self.delayDisplay('Checking loaded label')
+        self.delayDisplay(_('Checking loaded label'))
         self.assertEqual(node.GetNumberOfColors(), 7)
 
-        self.delayDisplay('Test passed')
+        self.delayDisplay(_('Test passed'))
