@@ -27,7 +27,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
 
     def __init__(self, epsilon=0.01):
         super().__init__()
-        self.loadType = "Scalar Volume"
+        self.loadType = _("Scalar Volume")
         self.epsilon = epsilon
         self.acquisitionModeling = None
         self.defaultStudyID = 'SLICER10001'  # TODO: What should be the new study ID?
@@ -76,7 +76,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
             readersComboBox.addItem(approach)
         readersComboBox.toolTip = ("Preferred back end.  Archetype was used by default in Slicer before June of 2017."
                                    "Change this setting if data that previously loaded stops working (and report an issue).")
-        formLayout.addRow("DICOM reader approach:", readersComboBox)
+        formLayout.addRow(_("DICOM reader approach:"), readersComboBox)
         panel.registerProperty(
             "DICOM/ScalarVolume/ReaderApproach", readersComboBox,
             "currentIndex", str(qt.SIGNAL("currentIndexChanged(int)")))
@@ -86,13 +86,13 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
                                          " non-rectilinear grid (such as tilted gantry CT acquisitions) and non-uniform slice spacing."
                                          " If no regularization is applied then image may appear distorted if it was acquired with irregular geometry.")
 
-        importFormatsComboBox.addItem("default (apply regularization transform)", "default")
-        importFormatsComboBox.addItem("none", "none")
-        importFormatsComboBox.addItem("apply regularization transform", "transform")
+        importFormatsComboBox.addItem(_("default (apply regularization transform)"), _("default"))
+        importFormatsComboBox.addItem(_("none"), _("none"))
+        importFormatsComboBox.addItem(_("apply regularization transform"), _("transform"))
         # In the future additional option, such as "resample" (harden the applied transform) may be added.
 
         importFormatsComboBox.currentIndex = 0
-        formLayout.addRow("Acquisition geometry regularization:", importFormatsComboBox)
+        formLayout.addRow(_("Acquisition geometry regularization:"), importFormatsComboBox)
         panel.registerProperty(
             "DICOM/ScalarVolume/AcquisitionGeometryRegularization", importFormatsComboBox,
             "currentUserDataAsString", str(qt.SIGNAL("currentIndexChanged(int)")),
@@ -103,7 +103,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
         allowLoadingByTimeCheckBox.toolTip = ("Offer loading of individual slices or group of slices"
                                               " that were acquired at a specific time (content or trigger time)."
                                               " If this option is enabled then a large number of loadable items may be displayed in the Advanced section of DICOM browser.")
-        formLayout.addRow("Allow loading subseries by time:", allowLoadingByTimeCheckBox)
+        formLayout.addRow(_("Allow loading subseries by time:"), allowLoadingByTimeCheckBox)
         allowLoadingByTimeMapper = ctk.ctkBooleanMapper(allowLoadingByTimeCheckBox, "checked", str(qt.SIGNAL("toggled(bool)")))
         panel.registerProperty(
             "DICOM/ScalarVolume/AllowLoadingByTime", allowLoadingByTimeMapper,
@@ -181,7 +181,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
         allFilesLoadable = DICOMLoadable()
         allFilesLoadable.files = files
         allFilesLoadable.name = self.cleanNodeName(seriesName)
-        allFilesLoadable.tooltip = "%d files, first file: %s" % (len(allFilesLoadable.files), allFilesLoadable.files[0])
+        allFilesLoadable.tooltip = _("%d files, first file: %s") % (len(allFilesLoadable.files), allFilesLoadable.files[0])
         allFilesLoadable.selected = True
         # add it to the list of loadables later, if pixel data is available in at least one file
 
@@ -550,7 +550,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
         # Define basic properties of the exportable
         exportable = slicer.qSlicerDICOMExportable()
         exportable.name = self.loadType
-        exportable.tooltip = "Creates a series of DICOM files from scalar volumes"
+        exportable.tooltip = _("Creates a series of DICOM files from scalar volumes")
         exportable.subjectHierarchyItemID = subjectHierarchyItemID
         exportable.pluginClass = self.__module__
         exportable.confidence = 0.5  # There could be more specialized volume types
@@ -578,12 +578,12 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
             # Get volume node to export
             shNode = slicer.vtkMRMLSubjectHierarchyNode.GetSubjectHierarchyNode(slicer.mrmlScene)
             if shNode is None:
-                error = "Invalid subject hierarchy"
+                error = _("Invalid subject hierarchy")
                 logging.error(error)
                 return error
             volumeNode = shNode.GetItemDataNode(exportable.subjectHierarchyItemID)
             if volumeNode is None or not volumeNode.IsA('vtkMRMLScalarVolumeNode'):
-                error = "Series '" + shNode.GetItemName(exportable.subjectHierarchyItemID) + "' cannot be exported"
+                error = _("Series '") + shNode.GetItemName(exportable.subjectHierarchyItemID) + _("' cannot be exported")
                 logging.error(error)
                 return error
 
@@ -600,39 +600,39 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
             # Get study and patient items
             studyItemID = shNode.GetItemParent(exportable.subjectHierarchyItemID)
             if not studyItemID:
-                error = "Unable to get study for series '" + volumeNode.GetName() + "'"
+                error = _("Unable to get study for series '") + volumeNode.GetName() + "'"
                 logging.error(error)
                 return error
             patientItemID = shNode.GetItemParent(studyItemID)
             if not patientItemID:
-                error = "Unable to get patient for series '" + volumeNode.GetName() + "'"
+                error = _("Unable to get patient for series '") + volumeNode.GetName() + "'"
                 logging.error(error)
                 return error
 
             # Assemble tags dictionary for volume export
             tags = {}
-            tags['Patient Name'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientNameTagName())
-            tags['Patient ID'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientIDTagName())
-            tags['Patient Birth Date'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientBirthDateTagName())
-            tags['Patient Sex'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientSexTagName())
-            tags['Patient Comments'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientCommentsTagName())
-            tags['Study ID'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyIDTagName())
-            tags['Study Date'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyDateTagName())
-            tags['Study Time'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyTimeTagName())
-            tags['Study Description'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyDescriptionTagName())
-            tags['Modality'] = exportable.tag('Modality')
-            tags['Manufacturer'] = exportable.tag('Manufacturer')
-            tags['Model'] = exportable.tag('Model')
-            tags['Series Description'] = exportable.tag('SeriesDescription')
-            tags['Series Number'] = exportable.tag('SeriesNumber')
-            tags['Series Date'] = exportable.tag('SeriesDate')
-            tags['Series Time'] = exportable.tag('SeriesTime')
-            tags['Content Date'] = exportable.tag('ContentDate')
-            tags['Content Time'] = exportable.tag('ContentTime')
+            tags[_('Patient Name')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientNameTagName())
+            tags[_('Patient ID')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientIDTagName())
+            tags[_('Patient Birth Date')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientBirthDateTagName())
+            tags[_('Patient Sex')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientSexTagName())
+            tags[_('Patient Comments')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientCommentsTagName())
+            tags[_('Study ID')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyIDTagName())
+            tags[_('Study Date')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyDateTagName())
+            tags[_('Study Time')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyTimeTagName())
+            tags[_('Study Description')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyDescriptionTagName())
+            tags[_('Modality')] = exportable.tag('Modality')
+            tags[_('Manufacturer')] = exportable.tag('Manufacturer')
+            tags[_('Model')] = exportable.tag('Model')
+            tags[_('Series Description')] = exportable.tag('SeriesDescription')
+            tags[_('Series Number')] = exportable.tag('SeriesNumber')
+            tags[_('Series Date')] = exportable.tag('SeriesDate')
+            tags[_('Series Time')] = exportable.tag('SeriesTime')
+            tags[_('Content Date')] = exportable.tag('ContentDate')
+            tags[_('Content Time')] = exportable.tag('ContentTime')
 
-            tags['Study Instance UID'] = exportable.tag('StudyInstanceUID')
-            tags['Series Instance UID'] = exportable.tag('SeriesInstanceUID')
-            tags['Frame of Reference UID'] = exportable.tag('FrameOfReferenceUID')
+            tags[_('Study Instance UID')] = exportable.tag('StudyInstanceUID')
+            tags[_('Series Instance UID')] = exportable.tag('SeriesInstanceUID')
+            tags[_('Frame of Reference UID')] = exportable.tag('FrameOfReferenceUID')
 
             # Generate any missing but required UIDs
             if not tags['Study Instance UID']:
@@ -674,7 +674,7 @@ class DICOMScalarVolumePluginClass(DICOMPlugin):
             # Perform export
             exporter = DICOMExportScalarVolume(tags['Study ID'], volumeNode, tags, directory)
             if not exporter.export():
-                return "Creating DICOM files from scalar volume failed. See the application log for details."
+                return _("Creating DICOM files from scalar volume failed. See the application log for details.")
 
         # Success
         return ""
@@ -857,19 +857,19 @@ class DICOMScalarVolumePlugin:
     """
 
     def __init__(self, parent):
-        parent.title = "DICOM Scalar Volume Plugin"
-        parent.categories = ["Developer Tools.DICOM Plugins"]
+        parent.title = _("DICOM Scalar Volume Plugin")
+        parent.categories = [_("Developer Tools.DICOM Plugins")]
         parent.contributors = ["Steve Pieper (Isomics Inc.), Csaba Pinter (Queen's)"]
-        parent.helpText = """
+        parent.helpText = _("""
     Plugin to the DICOM Module to parse and load scalar volumes
     from DICOM files.
     No module interface here, only in the DICOM module
-    """
-        parent.acknowledgementText = """
+    """)
+        parent.acknowledgementText = _("""
     This DICOM Plugin was developed by
     Steve Pieper, Isomics, Inc.
     and was partially funded by NIH grant 3P41RR013218.
-    """
+    """)
 
         # don't show this module - it only appears in the DICOM module
         parent.hidden = True

@@ -20,7 +20,7 @@ class DICOMVolumeSequencePluginClass(DICOMPlugin):
 
     def __init__(self):
         super().__init__()
-        self.loadType = "Volume Sequence"
+        self.loadType = _("Volume Sequence")
 
         self.tags['studyID'] = '0020,0010'
         self.tags['seriesDescription'] = "0008,103e"
@@ -91,7 +91,7 @@ class DICOMVolumeSequencePluginClass(DICOMPlugin):
         # Define basic properties of the exportable
         exportable = slicer.qSlicerDICOMExportable()
         exportable.name = self.loadType
-        exportable.tooltip = "Creates a series of DICOM files from volume sequences"
+        exportable.tooltip = _("Creates a series of DICOM files from volume sequences")
         exportable.subjectHierarchyItemID = subjectHierarchyItemID
         exportable.pluginClass = self.__module__
         exportable.confidence = 0.6  # Simple volume has confidence of 0.5, use a slightly higher value here
@@ -176,41 +176,41 @@ class DICOMVolumeSequencePluginClass(DICOMPlugin):
             # Get study and patient items
             studyItemID = shNode.GetItemParent(exportable.subjectHierarchyItemID)
             if not studyItemID:
-                error = "Unable to get study for series '" + volumeNode.GetName() + "'"
+                error = _("Unable to get study for series '") + volumeNode.GetName() + "'"
                 logging.error(error)
                 return error
             patientItemID = shNode.GetItemParent(studyItemID)
             if not patientItemID:
-                error = "Unable to get patient for series '" + volumeNode.GetName() + "'"
+                error = _("Unable to get patient for series '") + volumeNode.GetName() + "'"
                 logging.error(error)
                 return error
 
             # Assemble tags dictionary for volume export
 
             tags = {}
-            tags['Patient Name'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientNameTagName())
-            tags['Patient ID'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientIDTagName())
-            tags['Patient Comments'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientCommentsTagName())
-            tags['Study Instance UID'] = pydicom.uid.generate_uid()
-            tags['Patient Birth Date'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientBirthDateTagName())
-            tags['Patient Sex'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientSexTagName())
-            tags['Study ID'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyIDTagName())
-            tags['Study Date'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyDateTagName())
-            tags['Study Time'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyTimeTagName())
-            tags['Study Description'] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyDescriptionTagName())
-            tags['Modality'] = exportable.tag('Modality')
-            tags['Manufacturer'] = exportable.tag('Manufacturer')
-            tags['Model'] = exportable.tag('Model')
-            tags['Series Description'] = exportable.tag('SeriesDescription')
-            tags['Series Number'] = exportable.tag('SeriesNumber')
-            tags['Series Date'] = exportable.tag("SeriesDate")
-            tags['Series Time'] = exportable.tag("SeriesTime")
-            tags['Series Instance UID'] = pydicom.uid.generate_uid()
-            tags['Frame of Reference UID'] = pydicom.uid.generate_uid()
+            tags[_('Patient Name')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientNameTagName())
+            tags[_('Patient ID')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientIDTagName())
+            tags[_('Patient Comments')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientCommentsTagName())
+            tags[_('Study Instance UID')] = pydicom.uid.generate_uid()
+            tags[_('Patient Birth Date')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientBirthDateTagName())
+            tags[_('Patient Sex')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMPatientSexTagName())
+            tags[_('Study ID')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyIDTagName())
+            tags[_('Study Date')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyDateTagName())
+            tags[_('Study Time')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyTimeTagName())
+            tags[_('Study Description')] = exportable.tag(slicer.vtkMRMLSubjectHierarchyConstants.GetDICOMStudyDescriptionTagName())
+            tags[_('Modality')] = exportable.tag('Modality')
+            tags[_('Manufacturer')] = exportable.tag('Manufacturer
+            tags[_('Model')] = exportable.tag('Model')
+            tags[_('Series Description')] = exportable.tag('SeriesDescription')
+            tags[_('Series Number')] = exportable.tag('SeriesNumber')
+            tags[_('Series Date')] = exportable.tag("SeriesDate")
+            tags[_('Series Time')] = exportable.tag("SeriesTime")
+            tags[_('Series Instance UID')] = pydicom.uid.generate_uid()
+            tags[_('Frame of Reference UID')] = pydicom.uid.generate_uid()
 
             # Validate tags
             if tags['Modality'] == "":
-                error = "Empty modality for series '" + volumeNode.GetName() + "'"
+                error = _("Empty modality for series '") + volumeNode.GetName() + "'"
                 logging.error(error)
                 return error
             # TODO: more tag checks
@@ -271,16 +271,16 @@ class DICOMVolumeSequencePlugin:
     """
 
     def __init__(self, parent):
-        parent.title = "DICOM Volume Sequence Export Plugin"
-        parent.categories = ["Developer Tools.DICOM Plugins"]
+        parent.title = _("DICOM Volume Sequence Export Plugin")
+        parent.categories = [_("Developer Tools.DICOM Plugins")]
         parent.contributors = ["Andras Lasso (PerkLab)"]
-        parent.helpText = """
+        parent.helpText = _("""
     Plugin to the DICOM Module to export volume sequence to DICOM file.
     No module interface here, only in the DICOM module.
-    """
-        parent.acknowledgementText = """
+    """)
+        parent.acknowledgementText = _("""
     Originally developed by Andras Lasso (PekLab).
-    """
+    """)
 
         # don't show this module - it only appears in the DICOM module
         parent.hidden = True

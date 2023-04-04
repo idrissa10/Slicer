@@ -25,7 +25,7 @@ class DICOMGeAbusPluginClass(DICOMPlugin):
 
     def __init__(self):
         super().__init__()
-        self.loadType = "GE ABUS"
+        self.loadType = _("GE ABUS")
 
         self.tags['sopClassUID'] = "0008,0016"
         self.tags['seriesNumber'] = "0020,0011"
@@ -34,7 +34,7 @@ class DICOMGeAbusPluginClass(DICOMPlugin):
         self.tags['manufacturerModelName'] = "0008,1090"
 
         # Accepted private creator identifications
-        self.privateCreators = ["U-Systems", "General Electric Company 01"]
+        self.privateCreators = [_("U-Systems"), _("General Electric Company 01")]
 
     def examine(self, fileLists):
         """ Returns a list of DICOMLoadable instances
@@ -64,7 +64,7 @@ class DICOMGeAbusPluginClass(DICOMPlugin):
         for filePath in files:
             # Quick check of SOP class UID without parsing the file...
             try:
-                sopClassUID = slicer.dicomDatabase.fileValue(filePath, self.tags['sopClassUID'])
+                sopClassUID = slicer.dicomDatabase.fileValue(filePath, self.tags[_('sopClassUID')])
                 if not (sopClassUID in supportedSOPClassUIDs):
                     # Unsupported class
                     continue
@@ -111,7 +111,7 @@ class DICOMGeAbusPluginClass(DICOMPlugin):
             loadable = DICOMLoadable()
             loadable.files = [filePath]
             loadable.name = name.strip()  # remove leading and trailing spaces, if any
-            loadable.tooltip = "GE Invenia ABUS"
+            loadable.tooltip = _("GE Invenia ABUS")
             loadable.warning = "Loading of this image type is experimental. Please verify image size and orientation and report any problem is found."
             loadable.selected = True
             loadable.confidence = 0.9  # this has to be higher than 0.7 (ultrasound sequence)
@@ -312,16 +312,16 @@ class DICOMGeAbusPlugin:
     """
 
     def __init__(self, parent):
-        parent.title = "DICOM GE ABUS Import Plugin"
-        parent.categories = ["Developer Tools.DICOM Plugins"]
+        parent.title = _("DICOM GE ABUS Import Plugin")
+        parent.categories = [_("Developer Tools.DICOM Plugins")]
         parent.contributors = ["Andras Lasso (PerkLab)"]
-        parent.helpText = """
+        parent.helpText = _("""
     Plugin to the DICOM Module to parse and load GE Invenia ABUS images.
     No module interface here, only in the DICOM module.
-    """
-        parent.acknowledgementText = """
+    """)
+        parent.acknowledgementText = _("""
     The file was originally developed by Andras Lasso (PerkLab).
-    """
+    """)
 
         # don't show this module - it only appears in the DICOM module
         parent.hidden = True

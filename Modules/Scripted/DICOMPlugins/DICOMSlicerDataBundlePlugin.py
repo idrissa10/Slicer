@@ -22,7 +22,7 @@ class DICOMSlicerDataBundlePluginClass(DICOMPlugin):
 
     def __init__(self):
         super().__init__()
-        self.loadType = "Slicer Data Bundle"
+        self.loadType = _("Slicer Data Bundle")
         self.tags['seriesDescription'] = "0008,103e"
         self.tags['candygram'] = "cadb,0010"
         self.tags['zipSize'] = "cadb,1008"
@@ -163,8 +163,8 @@ class DICOMSlicerDataBundlePluginClass(DICOMPlugin):
 
         # Define basic properties of the exportable
         exportable = slicer.qSlicerDICOMExportable()
-        exportable.name = "Slicer data bundle"
-        exportable.tooltip = "Creates a series that embeds the entire Slicer scene in a private DICOM tag"
+        exportable.name = _("Slicer data bundle")
+        exportable.tooltip = _("Creates a series that embeds the entire Slicer scene in a private DICOM tag")
         exportable.subjectHierarchyItemID = subjectHierarchyItemID
         exportable.pluginClass = self.__module__
         exportable.confidence = 0.1  # There could be more specialized volume types
@@ -176,7 +176,7 @@ class DICOMSlicerDataBundlePluginClass(DICOMPlugin):
     def export(self, exportables):
         shNode = slicer.vtkMRMLSubjectHierarchyNode.GetSubjectHierarchyNode(slicer.mrmlScene)
         if shNode is None:
-            error = "Invalid subject hierarchy"
+            error = _("Invalid subject hierarchy")
             logging.error(error)
             return error
         dicomFiles = []
@@ -247,19 +247,19 @@ class DICOMSlicerDataBundlePlugin:
     """
 
     def __init__(self, parent):
-        parent.title = "DICOM Diffusion Volume Plugin"
-        parent.categories = ["Developer Tools.DICOM Plugins"]
+        parent.title = _("DICOM Diffusion Volume Plugin")
+        parent.categories = [_("Developer Tools.DICOM Plugins")]
         parent.contributors = ["Steve Pieper (Isomics Inc.), Csaba Pinter (Pixel Medical, Inc.)"]
-        parent.helpText = """
+        parent.helpText = _("""
 Plugin to the DICOM Module to parse and load diffusion volumes
 from DICOM files.
 No module interface here, only in the DICOM module
-"""
-        parent.acknowledgementText = """
+""")
+        parent.acknowledgementText = _("""
 This DICOM Plugin was developed by
 Steve Pieper, Isomics, Inc.
 and was partially funded by NIH grant 3P41RR013218.
-"""
+""")
 
         # don't show this module - it only appears in the DICOM module
         parent.hidden = True

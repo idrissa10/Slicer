@@ -19,7 +19,7 @@ class DICOMEnhancedUSVolumePluginClass(DICOMPlugin):
 
     def __init__(self):
         super().__init__()
-        self.loadType = "Enhanced US volume"
+        self.loadType = _("Enhanced US volume")
 
         self.tags['sopClassUID'] = "0008,0016"
         self.tags['seriesNumber'] = "0020,0011"
@@ -158,16 +158,16 @@ class DICOMEnhancedUSVolumePlugin:
     """
 
     def __init__(self, parent):
-        parent.title = "DICOM Enhanced US volume Plugin"
-        parent.categories = ["Developer Tools.DICOM Plugins"]
+        parent.title = _("DICOM Enhanced US volume Plugin")
+        parent.categories = [_("Developer Tools.DICOM Plugins")]
         parent.contributors = ["Andras Lasso (PerkLab)"]
-        parent.helpText = """
+        parent.helpText = _("""
     Plugin to the DICOM Module to parse and load 3D enhanced US volumes.
     No module interface here, only in the DICOM module.
-    """
-        parent.acknowledgementText = """
+    """)
+        parent.acknowledgementText = _("""
     The file was originally developed by Andras Lasso (PerkLab).
-    """
+    """)
 
         # don't show this module - it only appears in the DICOM module
         parent.hidden = True
