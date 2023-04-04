@@ -39,7 +39,7 @@ class DICOMLoadable:
             # name exposed to the user for the node
             self.name = "Unknown"
             # extra information the user sees on mouse over of the thing
-            self.tooltip = "No further information available"
+            self.tooltip = _("No further information available")
             # things the user should know before loading this data
             self.warning = ""
             # is the object checked for loading by default
@@ -74,7 +74,7 @@ class DICOMPlugin:
 
     def __init__(self):
         # displayed for the user as the plugin handling the load
-        self.loadType = "Generic DICOM"
+        self.loadType = _("Generic DICOM")
         # a dictionary that maps a list of files to a list of loadables
         # (so that subsequent requests for the same info can be
         #  serviced quickly)

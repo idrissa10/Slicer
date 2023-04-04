@@ -45,15 +45,15 @@ class DICOMExportScalarVolume:
         # # TODO: we should install dicom.dic with slicer and use it to
         # # define the tag to name mapping
         # tags = {
-        # "0010,0010": "Patient Name",
-        # "0010,0020": "Patient ID",
-        # "0010,4000": "Patient Comments",
-        # "0020,0010": "Study ID",
-        # "0008,0020": "Study Date",
-        # "0008,1030": "Study Description",
-        # "0008,0060": "Modality",
-        # "0008,0070": "Manufacturer",
-        # "0008,1090": "Model",
+        # "0010,0010": _("Patient Name"),
+        # "0010,0020": _("Patient ID"),
+        # "0010,4000": _("Patient Comments"),
+        # "0020,0010": _("Study ID"),
+        # "0008,0020": _("Study Date"),
+        # "0008,1030": _("Study Description"),
+        # "0008,0060": _("Modality"),
+        # "0008,0070": _("Manufacturer"),
+        # "0008,1090": _("Model"),
         # }
         # seriesNumbers = []
         # p = {}
