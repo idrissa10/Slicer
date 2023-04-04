@@ -20,19 +20,19 @@ class ScreenCapture(ScriptedLoadableModule):
 
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
-        self.parent.title = "Screen Capture"
-        self.parent.categories = ["Utilities"]
+        self.parent.title = _("Screen Capture")
+        self.parent.categories = [_("Utilities")]
         self.parent.dependencies = []
         self.parent.contributors = ["Andras Lasso (PerkLab Queen's University)"]
-        self.parent.helpText = """
+        self.parent.helpText = _("""
 This module captures image sequences and videos
 from dynamic contents shown in 3D and slice viewers.
-"""
+""")
         self.parent.helpText += self.getDefaultModuleDocumentationLink()
-        self.parent.acknowledgementText = """
+        self.parent.acknowledgementText = _("""
 This work was was funded by Cancer Care Ontario
 and the Ontario Consortium for Adaptive Interventions in Radiation Oncology (OCAIRO)
-"""
+""")
 
 
 #
@@ -70,7 +70,7 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         # Input area
         #
         self.inputCollapsibleButton = ctk.ctkCollapsibleButton()
-        self.inputCollapsibleButton.text = "Input"
+        self.inputCollapsibleButton.text = _("Input")
         self.layout.addWidget(self.inputCollapsibleButton)
         inputFormLayout = qt.QFormLayout(self.inputCollapsibleButton)
 
@@ -85,59 +85,59 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         self.viewNodeSelector.setMRMLScene(slicer.mrmlScene)
         self.viewNodeSelector.setToolTip("This slice or 3D view will be updated during capture."
                                          "Only this view will be captured unless 'Capture of all views' option in output section is enabled.")
-        inputFormLayout.addRow("Main view: ", self.viewNodeSelector)
+        inputFormLayout.addRow(_("Main view: "), self.viewNodeSelector)
 
         self.captureAllViewsCheckBox = qt.QCheckBox(" ")
         self.captureAllViewsCheckBox.checked = False
-        self.captureAllViewsCheckBox.setToolTip("If checked, all views will be captured. If unchecked then only the selected view will be captured.")
-        inputFormLayout.addRow("Capture all views:", self.captureAllViewsCheckBox)
+        self.captureAllViewsCheckBox.setToolTip(_("If checked, all views will be captured. If unchecked then only the selected view will be captured."))
+        inputFormLayout.addRow(_("Capture all views:"), self.captureAllViewsCheckBox)
 
         # Mode
         self.animationModeWidget = qt.QComboBox()
-        self.animationModeWidget.setToolTip("Select the property that will be adjusted")
-        inputFormLayout.addRow("Animation mode:", self.animationModeWidget)
+        self.animationModeWidget.setToolTip(_("Select the property that will be adjusted"))
+        inputFormLayout.addRow(_("Animation mode:"), self.animationModeWidget)
 
         # Slice start offset position
-        self.sliceStartOffsetSliderLabel = qt.QLabel("Start sweep offset:")
+        self.sliceStartOffsetSliderLabel = qt.QLabel(_("Start sweep offset:"))
         self.sliceStartOffsetSliderWidget = ctk.ctkSliderWidget()
         self.sliceStartOffsetSliderWidget.singleStep = 30
         self.sliceStartOffsetSliderWidget.minimum = -100
         self.sliceStartOffsetSliderWidget.maximum = 100
         self.sliceStartOffsetSliderWidget.value = 0
-        self.sliceStartOffsetSliderWidget.setToolTip("Start slice sweep offset.")
+        self.sliceStartOffsetSliderWidget.setToolTip(_("Start slice sweep offset."))
         inputFormLayout.addRow(self.sliceStartOffsetSliderLabel, self.sliceStartOffsetSliderWidget)
 
         # Slice end offset position
-        self.sliceEndOffsetSliderLabel = qt.QLabel("End sweep offset:")
+        self.sliceEndOffsetSliderLabel = qt.QLabel(_("End sweep offset:"))
         self.sliceEndOffsetSliderWidget = ctk.ctkSliderWidget()
         self.sliceEndOffsetSliderWidget.singleStep = 5
         self.sliceEndOffsetSliderWidget.minimum = -100
         self.sliceEndOffsetSliderWidget.maximum = 100
         self.sliceEndOffsetSliderWidget.value = 0
-        self.sliceEndOffsetSliderWidget.setToolTip("End slice sweep offset.")
+        self.sliceEndOffsetSliderWidget.setToolTip(_("End slice sweep offset."))
         inputFormLayout.addRow(self.sliceEndOffsetSliderLabel, self.sliceEndOffsetSliderWidget)
 
         # 3D rotation range
-        self.rotationSliderLabel = qt.QLabel("Rotation range:")
+        self.rotationSliderLabel = qt.QLabel(_("Rotation range:"))
         self.rotationSliderWidget = ctk.ctkRangeWidget()
         self.rotationSliderWidget.singleStep = 5
         self.rotationSliderWidget.minimum = -180
         self.rotationSliderWidget.maximum = 180
         self.rotationSliderWidget.minimumValue = -180
         self.rotationSliderWidget.maximumValue = 180
-        self.rotationSliderWidget.setToolTip("View rotation range, relative to current view orientation.")
+        self.rotationSliderWidget.setToolTip(_("View rotation range, relative to current view orientation."))
         inputFormLayout.addRow(self.rotationSliderLabel, self.rotationSliderWidget)
 
         # 3D rotation axis
-        self.rotationAxisLabel = qt.QLabel("Rotation axis:")
+        self.rotationAxisLabel = qt.QLabel(_("Rotation axis:"))
         self.rotationAxisWidget = ctk.ctkRangeWidget()
         self.rotationAxisWidget = qt.QComboBox()
-        self.rotationAxisWidget.addItem("Yaw", AXIS_YAW)
-        self.rotationAxisWidget.addItem("Pitch", AXIS_PITCH)
+        self.rotationAxisWidget.addItem(_("Yaw"), AXIS_YAW)
+        self.rotationAxisWidget.addItem(_("Pitch"), AXIS_PITCH)
         inputFormLayout.addRow(self.rotationAxisLabel, self.rotationAxisWidget)
 
         # Sequence browser node selector
-        self.sequenceBrowserNodeSelectorLabel = qt.QLabel("Sequence:")
+        self.sequenceBrowserNodeSelectorLabel = qt.QLabel(_("Sequence:"))
         self.sequenceBrowserNodeSelectorWidget = slicer.qMRMLNodeComboBox()
         self.sequenceBrowserNodeSelectorWidget.nodeTypes = ["vtkMRMLSequenceBrowserNode"]
         self.sequenceBrowserNodeSelectorWidget.addEnabled = False
@@ -145,39 +145,40 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         self.sequenceBrowserNodeSelectorWidget.noneEnabled = False
         self.sequenceBrowserNodeSelectorWidget.showHidden = False
         self.sequenceBrowserNodeSelectorWidget.setMRMLScene(slicer.mrmlScene)
-        self.sequenceBrowserNodeSelectorWidget.setToolTip("Items defined by this sequence browser will be replayed.")
+        self.sequenceBrowserNodeSelectorWidget.setToolTip(_("Items defined by this sequence browser will be replayed."))
         inputFormLayout.addRow(self.sequenceBrowserNodeSelectorLabel, self.sequenceBrowserNodeSelectorWidget)
 
         # Sequence start index
-        self.sequenceStartItemIndexLabel = qt.QLabel("Start index:")
+        self.sequenceStartItemIndexLabel = qt.QLabel(_("Start index:"))
         self.sequenceStartItemIndexWidget = ctk.ctkSliderWidget()
         self.sequenceStartItemIndexWidget.minimum = 0
         self.sequenceStartItemIndexWidget.decimals = 0
-        self.sequenceStartItemIndexWidget.setToolTip("First item in the sequence to capture.")
+        self.sequenceStartItemIndexWidget.setToolTip(_("First item in the sequence to capture."))
         inputFormLayout.addRow(self.sequenceStartItemIndexLabel, self.sequenceStartItemIndexWidget)
 
         # Sequence end index
-        self.sequenceEndItemIndexLabel = qt.QLabel("End index:")
+        self.sequenceEndItemIndexLabel = qt.QLabel(_("End index:"))
         self.sequenceEndItemIndexWidget = ctk.ctkSliderWidget()
         self.sequenceEndItemIndexWidget.minimum = 0
         self.sequenceEndItemIndexWidget.decimals = 0
-        self.sequenceEndItemIndexWidget.setToolTip("Last item in the sequence to capture.")
+        self.sequenceEndItemIndexWidget.setToolTip(_("Last item in the sequence to capture."))
         inputFormLayout.addRow(self.sequenceEndItemIndexLabel, self.sequenceEndItemIndexWidget)
 
         #
         # Output area
         #
         self.outputCollapsibleButton = ctk.ctkCollapsibleButton()
-        self.outputCollapsibleButton.text = "Output"
+        self.outputCollapsibleButton.text = _("Output")
         self.layout.addWidget(self.outputCollapsibleButton)
         outputFormLayout = qt.QFormLayout(self.outputCollapsibleButton)
 
         self.outputTypeWidget = qt.QComboBox()
-        self.outputTypeWidget.setToolTip("Select how captured images will be saved. Video mode requires setting of ffmpeg executable path in Advanced section.")
-        self.outputTypeWidget.addItem("image series")
-        self.outputTypeWidget.addItem("video")
-        self.outputTypeWidget.addItem("lightbox image")
-        outputFormLayout.addRow("Output type:", self.outputTypeWidget)
+        self.outputTypeWidget.setToolTip(_("Select how captured images will be saved. Video mode " +
+        "requires setting of ffmpeg executable path in Advanced section."))
+        self.outputTypeWidget.addItem(_("image series"))
+        self.outputTypeWidget.addItem(_("video"))
+        self.outputTypeWidget.addItem(_("lightbox image"))
+        outputFormLayout.addRow(_("Output type:"), self.outputTypeWidget)
 
         # Number of steps value
         self.numberOfStepsSliderWidget = ctk.ctkSliderWidget()
@@ -187,50 +188,50 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         self.numberOfStepsSliderWidget.maximum = 600
         self.numberOfStepsSliderWidget.value = 31
         self.numberOfStepsSliderWidget.decimals = 0
-        self.numberOfStepsSliderWidget.setToolTip("Number of images extracted between start and stop positions.")
+        self.numberOfStepsSliderWidget.setToolTip(_("Number of images extracted between start and stop positions."))
 
         # Single step toggle button
         self.singleStepButton = qt.QToolButton()
-        self.singleStepButton.setText("single")
+        self.singleStepButton.setText(_("single"))
         self.singleStepButton.setCheckable(True)
         self.singleStepButton.toolTip = "Capture a single image of current state only.\n" + \
-            "New filename is generated for each captured image (no files are overwritten)."
+            _("New filename is generated for each captured image (no files are overwritten).")
 
         hbox = qt.QHBoxLayout()
         hbox.addWidget(self.singleStepButton)
         hbox.addWidget(self.numberOfStepsSliderWidget)
-        outputFormLayout.addRow("Number of images:", hbox)
+        outputFormLayout.addRow(_("Number of images:"), hbox)
 
         # Output directory selector
         self.outputDirSelector = ctk.ctkPathLineEdit()
         self.outputDirSelector.filters = ctk.ctkPathLineEdit.Dirs
         self.outputDirSelector.settingKey = 'ScreenCaptureOutputDir'
-        outputFormLayout.addRow("Output directory:", self.outputDirSelector)
+        outputFormLayout.addRow(_("Output directory:"), self.outputDirSelector)
         if not self.outputDirSelector.currentPath:
             defaultOutputPath = os.path.abspath(os.path.join(slicer.app.defaultScenePath, 'SlicerCapture'))
             self.outputDirSelector.setCurrentPath(defaultOutputPath)
 
         self.videoFileNameWidget = qt.QLineEdit()
-        self.videoFileNameWidget.setToolTip("String that defines file name and type.")
+        self.videoFileNameWidget.setToolTip(_("String that defines file name and type."))
         self.videoFileNameWidget.text = "SlicerCapture.avi"
         self.videoFileNameWidget.setEnabled(False)
 
         self.lightboxImageFileNameWidget = qt.QLineEdit()
-        self.lightboxImageFileNameWidget.setToolTip("String that defines output lightbox file name and type.")
+        self.lightboxImageFileNameWidget.setToolTip(_("String that defines output lightbox file name and type."))
         self.lightboxImageFileNameWidget.text = "SlicerCaptureLightbox.png"
         self.lightboxImageFileNameWidget.setEnabled(False)
 
         hbox = qt.QHBoxLayout()
         hbox.addWidget(self.videoFileNameWidget)
         hbox.addWidget(self.lightboxImageFileNameWidget)
-        outputFormLayout.addRow("Output file name:", hbox)
+        outputFormLayout.addRow(_("Output file name:"), hbox)
 
         self.videoFormatWidget = qt.QComboBox()
         self.videoFormatWidget.enabled = False
         self.videoFormatWidget.setSizePolicy(qt.QSizePolicy.Expanding, qt.QSizePolicy.Preferred)
         for videoFormatPreset in self.logic.videoFormatPresets:
-            self.videoFormatWidget.addItem(videoFormatPreset["name"])
-        outputFormLayout.addRow("Video format:", self.videoFormatWidget)
+            self.videoFormatWidget.addItem(videoFormatPreset[_("name")])
+        outputFormLayout.addRow(_("Video format:"), self.videoFormatWidget)
 
         self.videoLengthSliderWidget = ctk.ctkSliderWidget()
         self.videoLengthSliderWidget.singleStep = 0.1
@@ -239,34 +240,34 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         self.videoLengthSliderWidget.value = 5
         self.videoLengthSliderWidget.suffix = "s"
         self.videoLengthSliderWidget.decimals = 1
-        self.videoLengthSliderWidget.setToolTip("Length of the exported video in seconds (without backward steps and repeating).")
+        self.videoLengthSliderWidget.setToolTip(_("Length of the exported video in seconds (without backward steps and repeating)."))
         self.videoLengthSliderWidget.setEnabled(False)
-        outputFormLayout.addRow("Video length:", self.videoLengthSliderWidget)
+        outputFormLayout.addRow(_("Video length:"), self.videoLengthSliderWidget)
 
         self.videoFrameRateSliderWidget = ctk.ctkSliderWidget()
         self.videoFrameRateSliderWidget.singleStep = 0.1
         self.videoFrameRateSliderWidget.minimum = 0.1
         self.videoFrameRateSliderWidget.maximum = 60
         self.videoFrameRateSliderWidget.value = 5.0
-        self.videoFrameRateSliderWidget.suffix = "fps"
+        self.videoFrameRateSliderWidget.suffix = _("fps")
         self.videoFrameRateSliderWidget.decimals = 3
-        self.videoFrameRateSliderWidget.setToolTip("Frame rate in frames per second.")
+        self.videoFrameRateSliderWidget.setToolTip(_("Frame rate in frames per second."))
         self.videoFrameRateSliderWidget.setEnabled(False)
-        outputFormLayout.addRow("Video frame rate:", self.videoFrameRateSliderWidget)
+        outputFormLayout.addRow(_("Video frame rate:"), self.videoFrameRateSliderWidget)
 
         #
         # Advanced area
         #
         self.advancedCollapsibleButton = ctk.ctkCollapsibleButton()
-        self.advancedCollapsibleButton.text = "Advanced"
+        self.advancedCollapsibleButton.text = _("Advanced")
         self.advancedCollapsibleButton.collapsed = True
         outputFormLayout.addRow(self.advancedCollapsibleButton)
         advancedFormLayout = qt.QFormLayout(self.advancedCollapsibleButton)
 
         self.forwardBackwardCheckBox = qt.QCheckBox(" ")
         self.forwardBackwardCheckBox.checked = False
-        self.forwardBackwardCheckBox.setToolTip("If checked, image series will be generated playing forward and then backward.")
-        advancedFormLayout.addRow("Forward-backward:", self.forwardBackwardCheckBox)
+        self.forwardBackwardCheckBox.setToolTip(_("If checked, image series will be generated playing forward and then backward."))
+        advancedFormLayout.addRow(_("Forward-backward:"), self.forwardBackwardCheckBox)
 
         self.repeatSliderWidget = ctk.ctkSliderWidget()
         self.repeatSliderWidget.decimals = 0
@@ -276,7 +277,7 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         self.repeatSliderWidget.value = 1
         self.repeatSliderWidget.setToolTip("Number of times image series are repeated. Useful for making short videos longer for playback in software"
                                            " that does not support looped playback.")
-        advancedFormLayout.addRow("Repeat:", self.repeatSliderWidget)
+        advancedFormLayout.addRow(_("Repeat:"), self.repeatSliderWidget)
 
         ffmpegPath = self.logic.getFfmpegPath()
         self.ffmpegPathSelector = ctk.ctkPathLineEdit()
@@ -284,26 +285,27 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         self.ffmpegPathSelector.setCurrentPath(ffmpegPath)
         self.ffmpegPathSelector.nameFilters = [self.logic.getFfmpegExecutableFilename()]
         self.ffmpegPathSelector.setSizePolicy(qt.QSizePolicy.MinimumExpanding, qt.QSizePolicy.Preferred)
-        self.ffmpegPathSelector.setToolTip("Set the path to ffmpeg executable. Download from: https://www.ffmpeg.org/")
-        advancedFormLayout.addRow("ffmpeg executable:", self.ffmpegPathSelector)
+        self.ffmpegPathSelector.setToolTip(_("Set the path to ffmpeg executable. Download from: https://www.ffmpeg.org/"))
+        advancedFormLayout.addRow(_("ffmpeg executable:"), self.ffmpegPathSelector)
 
-        self.videoExportFfmpegWarning = qt.QLabel('<qt><b><font color="red">Set valid ffmpeg executable path! ' +
-                                                  '<a href="https://slicer.readthedocs.io/en/latest/user_guide/modules/screencapture.html#setting-up-ffmpeg">Help...</a></font></b></qt>')
+        self.videoExportFfmpegWarning = qt.QLabel(_('<qt><b><font color="red">Set valid ffmpeg executable path! ')+
+                                                  _('<a href="https://slicer.readthedocs.io/en/latest/user_guide/modules/'
+                                                  'screencapture.html#setting-up-ffmpeg">Help...</a></font></b></qt>'))
         self.videoExportFfmpegWarning.connect('linkActivated(QString)', self.openURL)
         self.videoExportFfmpegWarning.setVisible(False)
         advancedFormLayout.addRow("", self.videoExportFfmpegWarning)
 
         self.extraVideoOptionsWidget = qt.QLineEdit()
-        self.extraVideoOptionsWidget.setToolTip('Additional video conversion options passed to ffmpeg. Parameters -i (input files), -y'
-                                                + '(overwrite without asking), -r (frame rate), -start_number are specified by the module and therefore'
-                                                + 'should not be included in this list.')
-        advancedFormLayout.addRow("Video extra options:", self.extraVideoOptionsWidget)
+        self.extraVideoOptionsWidget.setToolTip(_('Additional video conversion options passed to ffmpeg. Parameters -i (input files), -y')
+                                                + _('(overwrite without asking), -r (frame rate), -start_number are specified by the module and therefore')
+                                                + _('should not be included in this list.'))
+        advancedFormLayout.addRow(_("Video extra options:"), self.extraVideoOptionsWidget)
 
         self.fileNamePatternWidget = qt.QLineEdit()
         self.fileNamePatternWidget.setToolTip(
-            "String that defines file name, type, and numbering scheme. Default: image%05d.png.")
-        self.fileNamePatternWidget.text = "image_%05d.png"
-        advancedFormLayout.addRow("Image file name pattern:", self.fileNamePatternWidget)
+            _("String that defines file name, type, and numbering scheme. Default: image%05d.png."))
+        self.fileNamePatternWidget.text = _("image_%05d.png")
+        advancedFormLayout.addRow(_("Image file name pattern:"), self.fileNamePatternWidget)
 
         self.lightboxColumnCountSliderWidget = ctk.ctkSliderWidget()
         self.lightboxColumnCountSliderWidget.decimals = 0
@@ -311,45 +313,46 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         self.lightboxColumnCountSliderWidget.minimum = 1
         self.lightboxColumnCountSliderWidget.maximum = 20
         self.lightboxColumnCountSliderWidget.value = 6
-        self.lightboxColumnCountSliderWidget.setToolTip("Number of columns in lightbox image")
-        advancedFormLayout.addRow("Lightbox image columns:", self.lightboxColumnCountSliderWidget)
+        self.lightboxColumnCountSliderWidget.setToolTip(_("Number of columns in lightbox image"))
+        advancedFormLayout.addRow(_("Lightbox image columns:"), self.lightboxColumnCountSliderWidget)
 
         self.maxFramesWidget = qt.QSpinBox()
         self.maxFramesWidget.setRange(1, 9999)
         self.maxFramesWidget.setValue(600)
         self.maxFramesWidget.setToolTip(
-            "Maximum number of images to be captured (without backward steps and repeating).")
-        advancedFormLayout.addRow("Maximum number of images:", self.maxFramesWidget)
+            _("Maximum number of images to be captured (without backward steps and repeating)."))
+        advancedFormLayout.addRow(_("Maximum number of images:"), self.maxFramesWidget)
 
         self.volumeNodeComboBox = slicer.qMRMLNodeComboBox()
         self.volumeNodeComboBox.nodeTypes = ["vtkMRMLVectorVolumeNode"]
         self.volumeNodeComboBox.baseName = "Screenshot"
         self.volumeNodeComboBox.renameEnabled = True
         self.volumeNodeComboBox.noneEnabled = True
-        self.volumeNodeComboBox.setToolTip("Select a volume node to store the captured image in the scene instead of just writing immediately to disk. Requires output 'Number of images' to be set to 1.")
+        self.volumeNodeComboBox.setToolTip(_("Select a volume node to store the captured image in the scene instead of just" +
+        " writing immediately to disk. Requires output 'Number of images' to be set to 1."))
         self.volumeNodeComboBox.setMRMLScene(slicer.mrmlScene)
-        advancedFormLayout.addRow("Output volume node:", self.volumeNodeComboBox)
+        advancedFormLayout.addRow(_("Output volume node:"), self.volumeNodeComboBox)
 
         self.showViewControllersCheckBox = qt.QCheckBox(" ")
         self.showViewControllersCheckBox.checked = False
-        self.showViewControllersCheckBox.setToolTip("If checked, images will be captured with view controllers visible.")
-        advancedFormLayout.addRow("View controllers:", self.showViewControllersCheckBox)
+        self.showViewControllersCheckBox.setToolTip(_("If checked, images will be captured with view controllers visible."))
+        advancedFormLayout.addRow(_("View controllers:"), self.showViewControllersCheckBox)
 
         self.transparentBackgroundCheckBox = qt.QCheckBox(" ")
         self.transparentBackgroundCheckBox.checked = False
-        self.transparentBackgroundCheckBox.setToolTip("If checked, images will be captured with transparent background.")
-        advancedFormLayout.addRow("Transparent background:", self.transparentBackgroundCheckBox)
+        self.transparentBackgroundCheckBox.setToolTip(_("If checked, images will be captured with transparent background."))
+        advancedFormLayout.addRow(_("Transparent background:"), self.transparentBackgroundCheckBox)
 
         watermarkEnabled = slicer.util.settingsValue('ScreenCapture/WatermarkEnabled', False, converter=slicer.util.toBool)
 
         self.watermarkEnabledCheckBox = qt.QCheckBox(" ")
         self.watermarkEnabledCheckBox.checked = watermarkEnabled
-        self.watermarkEnabledCheckBox.setToolTip("If checked, selected watermark image will be added to all exported images.")
+        self.watermarkEnabledCheckBox.setToolTip(_("If checked, selected watermark image will be added to all exported images."))
 
         self.watermarkPositionWidget = qt.QComboBox()
         self.watermarkPositionWidget.enabled = watermarkEnabled
         self.watermarkPositionWidget.setSizePolicy(qt.QSizePolicy.MinimumExpanding, qt.QSizePolicy.Preferred)
-        self.watermarkPositionWidget.setToolTip("Add a watermark image to all exported images.")
+        self.watermarkPositionWidget.setToolTip(_("Add a watermark image to all exported images."))
         for watermarkPositionPreset in self.logic.watermarkPositionPresets:
             self.watermarkPositionWidget.addItem(watermarkPositionPreset["name"])
         self.watermarkPositionWidget.setCurrentText(
@@ -363,7 +366,7 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         self.watermarkSizeSliderWidget.maximum = 1000
         self.watermarkSizeSliderWidget.value = 100
         self.watermarkSizeSliderWidget.suffix = "%"
-        self.watermarkSizeSliderWidget.setToolTip("Size scaling applied to the watermark image. 100% is original size")
+        self.watermarkSizeSliderWidget.setToolTip(_("Size scaling applied to the watermark image. 100% is original size"))
         try:
             self.watermarkSizeSliderWidget.value = int(slicer.util.settingsValue('ScreenCapture/WatermarkSize', 100))
         except:
@@ -377,7 +380,7 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         self.watermarkOpacitySliderWidget.maximum = 100
         self.watermarkOpacitySliderWidget.value = 30
         self.watermarkOpacitySliderWidget.suffix = "%"
-        self.watermarkOpacitySliderWidget.setToolTip("Opacity of the watermark image. 100% is fully opaque.")
+        self.watermarkOpacitySliderWidget.setToolTip(_("Opacity of the watermark image. 100% is fully opaque."))
         try:
             self.watermarkOpacitySliderWidget.value = int(slicer.util.settingsValue('ScreenCapture/WatermarkOpacity', 30))
         except:
@@ -389,33 +392,33 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         self.watermarkPathSelector.nameFilters = ["*.png"]
         self.watermarkPathSelector.sizeAdjustPolicy = ctk.ctkPathLineEdit.AdjustToMinimumContentsLength
         self.watermarkPathSelector.setSizePolicy(qt.QSizePolicy.MinimumExpanding, qt.QSizePolicy.Preferred)
-        self.watermarkPathSelector.setToolTip("Watermark image file in png format")
+        self.watermarkPathSelector.setToolTip(_("Watermark image file in png format"))
 
         hbox = qt.QHBoxLayout()
         hbox.addWidget(self.watermarkEnabledCheckBox)
-        hbox.addWidget(qt.QLabel("Position:"))
+        hbox.addWidget(qt.QLabel(_("Position:")))
         hbox.addWidget(self.watermarkPositionWidget)
-        hbox.addWidget(qt.QLabel("Size:"))
+        hbox.addWidget(qt.QLabel(_("Size:")))
         hbox.addWidget(self.watermarkSizeSliderWidget)
-        hbox.addWidget(qt.QLabel("Opacity:"))
+        hbox.addWidget(qt.QLabel(_("Opacity:")))
         hbox.addWidget(self.watermarkOpacitySliderWidget)
         # hbox.addStretch()
-        advancedFormLayout.addRow("Watermark image:", hbox)
+        advancedFormLayout.addRow(_("Watermark image:"), hbox)
 
         hbox = qt.QHBoxLayout()
         hbox.addWidget(self.watermarkPathSelector)
         advancedFormLayout.addRow("", hbox)
 
         # Capture button
-        self.captureButtonLabelCapture = "Capture"
-        self.captureButtonLabelCancel = "Cancel"
+        self.captureButtonLabelCapture = _("Capture")
+        self.captureButtonLabelCancel = _("Cancel")
         self.captureButton = qt.QPushButton(self.captureButtonLabelCapture)
-        self.captureButton.toolTip = "Capture slice sweep to image sequence."
+        self.captureButton.toolTip = _("Capture slice sweep to image sequence.")
         self.showCreatedOutputFileButton = qt.QPushButton()
         self.showCreatedOutputFileButton.setIcon(qt.QIcon(':Icons/Go.png'))
         self.showCreatedOutputFileButton.setMaximumWidth(60)
         self.showCreatedOutputFileButton.enabled = False
-        self.showCreatedOutputFileButton.toolTip = "Show created output file."
+        self.showCreatedOutputFileButton.toolTip = _("Show created output file.")
         hbox = qt.QHBoxLayout()
         hbox.addWidget(self.captureButton)
         hbox.addWidget(self.showCreatedOutputFileButton)
@@ -469,8 +472,8 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
         qt.QDesktopServices().openUrl(qt.QUrl("file:///" + self.createdOutputFile, qt.QUrl.TolerantMode))
 
     def updateOutputType(self, selectionIndex=0):
-        isVideo = self.outputTypeWidget.currentText == "video"
-        isLightbox = self.outputTypeWidget.currentText == "lightbox image"
+        isVideo = self.outputTypeWidget.currentText == _("video")
+        isLightbox = self.outputTypeWidget.currentText == _("lightbox image")
         self.fileNamePatternWidget.enabled = not (isVideo or isLightbox)
         self.videoFileNameWidget.enabled = isVideo
         self.videoFormatWidget.enabled = isVideo
@@ -520,12 +523,12 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
 
             self.animationModeWidget.clear()
             if self.viewNodeType == VIEW_SLICE:
-                self.animationModeWidget.addItem("slice sweep")
-                self.animationModeWidget.addItem("slice fade")
+                self.animationModeWidget.addItem(_("slice sweep"))
+                self.animationModeWidget.addItem(_("slice fade"))
             if self.viewNodeType == VIEW_3D:
-                self.animationModeWidget.addItem("3D rotation")
+                self.animationModeWidget.addItem(_("3D rotation"))
             if sequencesModuleAvailable:
-                self.animationModeWidget.addItem("sequence")
+                self.animationModeWidget.addItem(_("sequence"))
 
         if self.animationMode != self.animationModeWidget.currentText:
             self.animationMode = self.animationModeWidget.currentText
@@ -554,19 +557,19 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
             self.sliceEndOffsetSliderWidget.blockSignals(wasBlocked)
 
         # 3D rotation
-        self.rotationSliderLabel.visible = (self.animationMode == "3D rotation")
-        self.rotationSliderWidget.visible = (self.animationMode == "3D rotation")
-        self.rotationAxisLabel.visible = (self.animationMode == "3D rotation")
-        self.rotationAxisWidget.visible = (self.animationMode == "3D rotation")
+        self.rotationSliderLabel.visible = (self.animationMode == _("3D rotation"))
+        self.rotationSliderWidget.visible = (self.animationMode == _("3D rotation"))
+        self.rotationAxisLabel.visible = (self.animationMode == _("3D rotation"))
+        self.rotationAxisWidget.visible = (self.animationMode == _("3D rotation"))
 
         # Sequence
-        self.sequenceBrowserNodeSelectorLabel.visible = (self.animationMode == "sequence")
-        self.sequenceBrowserNodeSelectorWidget.visible = (self.animationMode == "sequence")
-        self.sequenceStartItemIndexLabel.visible = (self.animationMode == "sequence")
-        self.sequenceStartItemIndexWidget.visible = (self.animationMode == "sequence")
-        self.sequenceEndItemIndexLabel.visible = (self.animationMode == "sequence")
-        self.sequenceEndItemIndexWidget.visible = (self.animationMode == "sequence")
-        if self.animationMode == "sequence":
+        self.sequenceBrowserNodeSelectorLabel.visible = (self.animationMode == _("sequence"))
+        self.sequenceBrowserNodeSelectorWidget.visible = (self.animationMode == _("sequence"))
+        self.sequenceStartItemIndexLabel.visible = (self.animationMode == _("sequence"))
+        self.sequenceStartItemIndexWidget.visible = (self.animationMode == _("sequence"))
+        self.sequenceEndItemIndexLabel.visible = (self.animationMode == _("sequence"))
+        self.sequenceEndItemIndexWidget.visible = (self.animationMode == _("sequence"))
+        if self.animationMode == _("sequence"):
             sequenceBrowserNode = self.sequenceBrowserNodeSelectorWidget.currentNode()
 
             sequenceItemCount = 0
@@ -657,7 +660,7 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
 
         self.statusLabel.plainText = ''
 
-        videoOutputRequested = (self.outputTypeWidget.currentText == "video")
+        videoOutputRequested = (self.outputTypeWidget.currentText == _("video"))
         viewNode = self.viewNodeSelector.currentNode()
         numberOfSteps = int(self.numberOfStepsSliderWidget.value)
         if self.singleStepButton.checked:
@@ -678,7 +681,7 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
                 if slicer.util.confirmOkCancelDisplay(
                     'Video encoder not detected on your system. '
                     'Download ffmpeg video encoder?',
-                        windowTitle='Download confirmation'):
+                        windowTitle=_('Download confirmation')):
                     if not self.logic.ffmpegDownload():
                         slicer.util.errorDisplay("ffmpeg download failed")
             if not self.logic.isFfmpegPathValid():
@@ -692,7 +695,8 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
 
         # Need to create a new random file pattern if video output is requested to make sure that new image files are not mixed up with
         # existing files in the output directory
-        imageFileNamePattern = self.fileNamePatternWidget.text if (self.outputTypeWidget.currentText == "image series") else self.logic.getRandomFilePattern()
+        imageFileNamePattern = self.fileNamePatternWidget.text if (self.outputTypeWidget.currentText ==
+        _("image series")) else self.logic.getRandomFilePattern()
 
         self.captureButton.setEnabled(True)
         self.captureButton.text = self.captureButtonLabelCancel
@@ -716,29 +720,29 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
                 volumeNode = None if numberOfSteps > 1 else self.volumeNodeComboBox.currentNode()
                 self.logic.captureImageFromView(view, filename, transparentBackground, volumeNode=volumeNode)
                 if filename:
-                    self.logic.addLog("Write " + filename)
+                    self.logic.addLog(_("Write ") + filename)
                 if volumeNode:
                     self.logic.addLog(f"Write to volume node '{volumeNode.GetName()}'")
-            elif self.animationModeWidget.currentText == "slice sweep":
+            elif self.animationModeWidget.currentText == _("slice sweep"):
                 self.logic.captureSliceSweep(viewNode, self.sliceStartOffsetSliderWidget.value,
                                              self.sliceEndOffsetSliderWidget.value, numberOfSteps, outputDir, imageFileNamePattern,
                                              captureAllViews=captureAllViews, transparentBackground=transparentBackground)
-            elif self.animationModeWidget.currentText == "slice fade":
+            elif self.animationModeWidget.currentText == _("slice fade"):
                 self.logic.captureSliceFade(viewNode, numberOfSteps, outputDir, imageFileNamePattern,
                                             captureAllViews=captureAllViews, transparentBackground=transparentBackground)
-            elif self.animationModeWidget.currentText == "3D rotation":
+            elif self.animationModeWidget.currentText == _("3D rotation"):
                 self.logic.capture3dViewRotation(viewNode, self.rotationSliderWidget.minimumValue,
                                                  self.rotationSliderWidget.maximumValue, numberOfSteps,
                                                  self.rotationAxisWidget.itemData(self.rotationAxisWidget.currentIndex),
                                                  outputDir, imageFileNamePattern,
                                                  captureAllViews=captureAllViews, transparentBackground=transparentBackground)
-            elif self.animationModeWidget.currentText == "sequence":
+            elif self.animationModeWidget.currentText == _("sequence"):
                 self.logic.captureSequence(viewNode, self.sequenceBrowserNodeSelectorWidget.currentNode(),
                                            self.sequenceStartItemIndexWidget.value, self.sequenceEndItemIndexWidget.value,
                                            numberOfSteps, outputDir, imageFileNamePattern,
                                            captureAllViews=captureAllViews, transparentBackground=transparentBackground)
             else:
-                raise ValueError('Unsupported view node type.')
+                raise ValueError(_('Unsupported view node type.'))
 
             import shutil
 
@@ -761,7 +765,7 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
                         for step in range(numberOfSteps):
                             sourceFilename = filePathPattern % step
                             destinationFilename = filePathPattern % fileIndex
-                            self.logic.addLog("Copy to " + destinationFilename)
+                            self.logic.addLog(_("Copy to ") + destinationFilename)
                             shutil.copyfile(sourceFilename, destinationFilename)
                             fileIndex += 1
                 if forwardBackward and (numberOfSteps > 2):
@@ -772,11 +776,11 @@ class ScreenCaptureWidget(ScriptedLoadableModuleWidget):
                 if videoOutputRequested:
                     self.logic.createVideo(fps, self.extraVideoOptionsWidget.text,
                                            outputDir, imageFileNamePattern, self.videoFileNameWidget.text)
-                elif (self.outputTypeWidget.currentText == "lightbox image"):
+                elif (self.outputTypeWidget.currentText == _("lightbox image")):
                     self.logic.createLightboxImage(int(self.lightboxColumnCountSliderWidget.value),
                                                    outputDir, imageFileNamePattern, numberOfSteps, self.lightboxImageFileNameWidget.text)
             finally:
-                if not self.outputTypeWidget.currentText == "image series":
+                if not self.outputTypeWidget.currentText == _("image series"):
                     self.logic.deleteTemporaryFiles(outputDir, imageFileNamePattern, numberOfSteps)
 
             self.addLog("Done.")
@@ -1239,7 +1243,7 @@ class ScreenCaptureLogic(ScriptedLoadableModuleLogic):
 
         sliceLogic.SetSliceOffset(originalSliceOffset)
         if self.cancelRequested:
-            raise ValueError('User requested cancel.')
+            raise ValueError(_('User requested cancel.'))
 
     def captureSliceFade(self, sliceNode, numberOfImages, outputDir,
                          outputFilenamePattern, captureAllViews=None, transparentBackground=False):
@@ -1450,7 +1454,7 @@ class ScreenCaptureLogic(ScriptedLoadableModuleLogic):
         filePathPattern = os.path.join(outputDir, imageFileNamePattern)
         for imageIndex in range(numberOfImages):
             filename = filePathPattern % imageIndex
-            logging.debug("Delete temporary file " + filename)
+            logging.debug(_("Delete temporary file ") + filename)
             os.remove(filename)
 
     def getNextAvailableFileName(self, outputDir, outputFilenamePattern, snapshotIndex):
@@ -1524,35 +1528,35 @@ class ScreenCaptureTest(ScriptedLoadableModuleTest):
         self.test_VolumeNodeUpdate()
 
     def test_SliceSweep(self):
-        self.delayDisplay("Testing SliceSweep")
+        self.delayDisplay(_("Testing SliceSweep"))
         viewNode = slicer.mrmlScene.GetNodeByID('vtkMRMLSliceNodeRed')
         self.assertIsNotNone(viewNode)
         self.logic.captureSliceSweep(viewNode, -125, 75, self.numberOfImages, self.tempDir, self.imageFileNamePattern)
         self.verifyAndDeleteWrittenFiles()
-        self.delayDisplay('Testing SliceSweep completed successfully')
+        self.delayDisplay(_('Testing SliceSweep completed successfully'))
 
     def test_SliceFade(self):
-        self.delayDisplay("Testing SliceFade")
+        self.delayDisplay(_("Testing SliceFade"))
         viewNode = slicer.mrmlScene.GetNodeByID('vtkMRMLSliceNodeRed')
         self.assertIsNotNone(viewNode)
         self.logic.captureSliceFade(viewNode, self.numberOfImages, self.tempDir, self.imageFileNamePattern)
         self.verifyAndDeleteWrittenFiles()
-        self.delayDisplay('Testing SliceFade completed successfully')
+        self.delayDisplay(_('Testing SliceFade completed successfully'))
 
     def test_3dViewRotation(self):
-        self.delayDisplay("Testing 3D view rotation")
+        self.delayDisplay(_("Testing 3D view rotation"))
         viewNode = slicer.mrmlScene.GetNodeByID('vtkMRMLViewNode1')
         self.assertIsNotNone(viewNode)
         self.logic.capture3dViewRotation(viewNode, -180, 180, self.numberOfImages, AXIS_YAW, self.tempDir, self.imageFileNamePattern)
         self.verifyAndDeleteWrittenFiles()
-        self.delayDisplay('Testing 3D view rotation completed successfully')
+        self.delayDisplay(_('Testing 3D view rotation completed successfully'))
 
     def test_VolumeNodeUpdate(self):
-        self.delayDisplay("Testing VolumeNode update")
+        self.delayDisplay(_("Testing VolumeNode update"))
         viewNode = None  # Capture All Views
         volumeNode = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLVectorVolumeNode")
         self.assertIsNotNone(volumeNode)
         self.assertIsNone(volumeNode.GetImageData())
         self.logic.captureImageFromView(viewNode, volumeNode=volumeNode)
         self.assertIsNotNone(volumeNode.GetImageData())
-        self.delayDisplay('Testing VolumeNode update completed successfully')
+        self.delayDisplay(_('Testing VolumeNode update completed successfully'))
