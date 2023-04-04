@@ -27,7 +27,7 @@ def _newItemPlaceholderItem(parent):
     color.setAlphaF(0.5)
 
     item = qt.QTreeWidgetItem()
-    item.setText(0, "(New item)")
+    item.setText(0, _("(New item)"))
     item.setForeground(0, qt.QBrush(color))
 
     return item
@@ -48,13 +48,13 @@ class EditableTreeWidget(qt.QTreeWidget):
         self.addItem(_newItemPlaceholderItem(self), placeholder=True)
 
         # Set up context menu
-        self._shiftUpAction = _makeAction(self, text="Move &Up",
-                                          icon="arrow-up",
+        self._shiftUpAction = _makeAction(self, text=_("Move &Up"),
+                                          icon=_("arrow-up"),
                                           shortcut="ctrl+shift+up",
                                           slot=self.shiftSelectionUp)
 
-        self._shiftDownAction = _makeAction(self, text="Move &Down",
-                                            icon="arrow-down",
+        self._shiftDownAction = _makeAction(self, text=_("Move &Down"),
+                                            icon=_("arrow-down"),
                                             shortcut="ctrl+shift+down",
                                             slot=self.shiftSelectionDown)
 
@@ -126,7 +126,7 @@ class EditableTreeWidget(qt.QTreeWidget):
             # Remove placeholder effect from new item
             item.setData(0, qt.Qt.ForegroundRole, None)
             if column != 0:
-                item.setText(0, "Anonymous")
+                item.setText(0, _("Anonymous"))
 
             # Update actions so new item can be moved/deleted
             self.updateActions()
