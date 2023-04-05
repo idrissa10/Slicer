@@ -120,7 +120,7 @@ class DICOMRequestHandler:
                     studyDataset.StudyDescription = dataset.StudyDescription if hasattr(studyDataset, 'StudyDescription') else None
                     studyDataset.StudyInstanceUID = dataset.StudyInstanceUID
                     studyDataset.AccessionNumber = dataset.AccessionNumber
-                    studyDataset.InstanceAvailability = 'ONLINE'
+                    studyDataset.InstanceAvailability = _('ONLINE')
                     studyDataset.ModalitiesInStudy = list(modalitiesInStudy)
                     studyDataset.ReferringPhysicianName = dataset.ReferringPhysicianName
                     studyDataset[self.retrieveURLTag] = pydicom.dataelem.DataElement(
