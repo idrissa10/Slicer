@@ -316,27 +316,27 @@ class Wiki:
 def handle_query(wiki, args):
 
     def display_version_info():
-        print("Version info:")
+        print(_("Version info:"))
         for page_short_name, page_name in Wiki.VERSION_INFO_PAGES.items():
             method = getattr(wiki, "%s_version" % page_short_name)
             print(f"  {page_name}: {method()}")
 
     def display_next_version_info():
-        print("Next version info:")
+        print(_("Next version info:"))
         for page_short_name, version in \
                 wiki.compute_updated_version_info(wiki.next_version()).items():
             page_name = Wiki.VERSION_INFO_PAGES[page_short_name]
             print(f"  {page_name}: {version}")
 
     def display_version_list():
-        print("Versions: %s" % " ".join(wiki.version_list()))
+        print(_("Versions: %s") % " ".join(wiki.version_list()))
 
     def display_acknowledgments_main_version():
         print(
-            "Acknowledgments main version: %s" % wiki.acknowledgments_main_version())
+            _("Acknowledgments main version: %s") % wiki.acknowledgments_main_version())
 
     def display_redirect_pages_version():
-        print("Redirect pages:")
+        print(_("Redirect pages:"))
         for redirect_page, version in wiki.redirect_pages_version():
             print(f"  {redirect_page}: {version}")
 

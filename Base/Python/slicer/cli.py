@@ -8,7 +8,7 @@ def createNode(cliModule, parameters=None):
         return None
     cliLogic = cliModule.logic()
     if not cliLogic:
-        print("Could not find logic for module '%s'" % cliModule.name)
+        print(_("Could not find logic for module '%s'") % cliModule.name)
         return None
     node = cliLogic.CreateNodeInScene()
     setNodeParameters(node, parameters)
@@ -45,7 +45,7 @@ def setNodeParameters(node, parameters):
             node.SetParameterAsString(key, commaSeparatedString)
         # TODO: file support
         else:
-            print("parameter ", key, " has unsupported type ", value.__class__.__name__)
+            print(_("parameter "), key, _(" has unsupported type "), value.__class__.__name__)
 
 
 def runSync(module, node=None, parameters=None, delete_temporary_files=True, update_display=True):
@@ -94,4 +94,4 @@ def run(module, node=None, parameters=None, wait_for_completion=False, delete_te
 
 
 def cancel(node):
-    print("Not yet implemented")
+    print(_("Not yet implemented"))

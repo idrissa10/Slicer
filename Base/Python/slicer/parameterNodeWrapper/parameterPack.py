@@ -180,7 +180,7 @@ def _processParameterPack(classtype):
         default = default.value if default is not None else serializer.default()
 
         if annotations:
-            print("Warning: unused annotations", annotations)
+            print(_("Warning: unused annotations"), annotations)
         try:
             serializer.validate(default)
         except Exception as e:

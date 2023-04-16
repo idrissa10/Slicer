@@ -44,7 +44,7 @@ def GetSlicerITKReadWriteAddress(nodeObjectOrName):
     myNode = nodeObjectOrName if isinstance(nodeObjectOrName, slicer.vtkMRMLNode) else slicer.util.getNode(nodeObjectOrName)
     myNodeSceneAddress = myNode.GetScene().GetAddressAsString("").replace('Addr=', '')
     myNodeSceneID = myNode.GetID()
-    myNodeFullITKAddress = 'slicer:' + myNodeSceneAddress + '#' + myNodeSceneID
+    myNodeFullITKAddress = _('slicer:') + myNodeSceneAddress + '#' + myNodeSceneID
     return myNodeFullITKAddress
 
 

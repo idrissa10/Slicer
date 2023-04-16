@@ -2787,7 +2787,7 @@ def messageBox(text, parent=None, **kwargs):
     return mbox.exec_()
 
 
-def createProgressDialog(parent=None, value=0, maximum=100, labelText="", windowTitle="Processing...", **kwargs):
+def createProgressDialog(parent=None, value=0, maximum=100, labelText="", windowTitle=_("Processing..."), **kwargs):
     """Display a modal QProgressDialog.
 
     Go to `QProgressDialog documentation <https://doc.qt.io/qt-5/qprogressdialog.html>`_ to

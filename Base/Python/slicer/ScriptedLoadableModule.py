@@ -23,14 +23,14 @@ class ScriptedLoadableModule:
         parent.categories = []
         parent.dependencies = []
         parent.contributors = ["Andras Lasso (PerkLab, Queen's University), Steve Pieper (Isomics)"]
-        parent.helpText = """
+        parent.helpText = _("""
 This module was created from a template and the help section has not yet been updated.
-"""
+""")
 
-        parent.acknowledgementText = """
+        parent.acknowledgementText = _("""
 This work is supported by NA-MIC, NAC, BIRN, NCIGT, and the Slicer Community. See <a>https://www.slicer.org</a> for details.
 This work is partially supported by PAR-07-249: R01CA131718 NA-MIC Virtual Colonoscopy (See <a href=https://www.slicer.org>https://www.na-mic.org/Wiki/index.php/NA-MIC_NCBC_Collaboration:NA-MIC_virtual_colonoscopy</a>).
-"""
+""")
 
         # Set module icon from Resources/Icons/<ModuleName>.png
         moduleDir = os.path.dirname(self.parent.path)
@@ -150,24 +150,24 @@ class ScriptedLoadableModuleWidget:
         # developer mode is turned off.
 
         self.reloadCollapsibleButton = ctk.ctkCollapsibleButton()
-        self.reloadCollapsibleButton.text = "Reload && Test"
+        self.reloadCollapsibleButton.text = _("Reload && Test")
         self.layout.addWidget(self.reloadCollapsibleButton)
         reloadFormLayout = qt.QFormLayout(self.reloadCollapsibleButton)
 
         # reload button
-        self.reloadButton = qt.QPushButton("Reload")
-        self.reloadButton.toolTip = "Reload this module."
-        self.reloadButton.name = "ScriptedLoadableModuleTemplate Reload"
+        self.reloadButton = qt.QPushButton(_("Reload"))
+        self.reloadButton.toolTip = _("Reload this module.")
+        self.reloadButton.name = _("ScriptedLoadableModuleTemplate Reload")
         self.reloadButton.connect('clicked()', self.onReload)
 
         # reload and test button
-        self.reloadAndTestButton = qt.QPushButton("Reload and Test")
-        self.reloadAndTestButton.toolTip = "Reload this module and then run the self tests."
+        self.reloadAndTestButton = qt.QPushButton(_("Reload and Test"))
+        self.reloadAndTestButton.toolTip = _("Reload this module and then run the self tests.")
         self.reloadAndTestButton.connect('clicked()', self.onReloadAndTest)
 
         # edit python source code
-        self.editSourceButton = qt.QPushButton("Edit")
-        self.editSourceButton.toolTip = "Edit the module's source code."
+        self.editSourceButton = qt.QPushButton(_("Edit"))
+        self.editSourceButton.toolTip = _("Edit the module's source code.")
         self.editSourceButton.connect('clicked()', self.onEditSource)
 
         self.editModuleUiButton = None
@@ -175,16 +175,16 @@ class ScriptedLoadableModuleWidget:
         import os.path
         if os.path.isfile(moduleUiFileName):
             # Module UI file exists
-            self.editModuleUiButton = qt.QPushButton("Edit UI")
-            self.editModuleUiButton.toolTip = "Edit the module's .ui file."
+            self.editModuleUiButton = qt.QPushButton(_("Edit UI"))
+            self.editModuleUiButton.toolTip = _("Edit the module's .ui file.")
             self.editModuleUiButton.connect('clicked()', lambda filename=moduleUiFileName: slicer.util.startQtDesigner(moduleUiFileName))
 
         # restart Slicer button
         # (use this during development, but remove it when delivering
         #  your module to users)
-        self.restartButton = qt.QPushButton("Restart Slicer")
-        self.restartButton.toolTip = "Restart Slicer"
-        self.restartButton.name = "ScriptedLoadableModuleTemplate Restart"
+        self.restartButton = qt.QPushButton(_("Restart Slicer"))
+        self.restartButton.toolTip = _("Restart Slicer")
+        self.restartButton.name = _("ScriptedLoadableModuleTemplate Restart")
         self.restartButton.connect('clicked()', slicer.app.restart)
 
         if self.editModuleUiButton:
@@ -208,7 +208,7 @@ class ScriptedLoadableModuleWidget:
         # from old ones.
         print('\n' * 2)
         print('-' * 30)
-        print('Reloading module: ' + self.moduleName)
+        print(_('Reloading module: ') + self.moduleName)
         print('-' * 30)
         print('\n' * 2)
 
@@ -218,7 +218,7 @@ class ScriptedLoadableModuleWidget:
         """Reload scripted module widget representation and call :func:`ScriptedLoadableModuleTest.runTest()`
         passing ``kwargs``.
         """
-        with slicer.util.tryWithErrorDisplay("Reload and Test failed."):
+        with slicer.util.tryWithErrorDisplay(_("Reload and Test failed.")):
             self.onReload()
             test = slicer.selfTests[self.moduleName]
             test(msec=int(slicer.app.userSettings().value("Developer/SelfTestDisplayMessageDelay")), **kwargs)
@@ -386,13 +386,13 @@ class ScriptedLoadableModuleTest(unittest.TestCase):
             widget = lm.threeDWidget(0).threeDView()
         elif type == slicer.qMRMLScreenShotDialog.Red:
             # red slice window
-            widget = lm.sliceWidget("Red")
+            widget = lm.sliceWidget(_("Red"))
         elif type == slicer.qMRMLScreenShotDialog.Yellow:
             # yellow slice window
-            widget = lm.sliceWidget("Yellow")
+            widget = lm.sliceWidget(_("Yellow"))
         elif type == slicer.qMRMLScreenShotDialog.Green:
             # green slice window
-            widget = lm.sliceWidget("Green")
+            widget = lm.sliceWidget(_("Green"))
         else:
             # default to using the full window
             widget = slicer.util.mainWindow()
